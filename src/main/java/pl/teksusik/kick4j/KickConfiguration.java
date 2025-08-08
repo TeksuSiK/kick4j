@@ -18,6 +18,11 @@ public class KickConfiguration {
     private String authorizationEndpoint = "/oauth/authorize";
     private String tokenEndpoint = "/oauth/token";
 
+    private String baseUrl = "https://api.kick.com/public/v1";
+
+    private String categoriesUrl = "/categories";
+    private String categoriesIdUrl = "/categories/{id}";
+
     public String getOAuthHost() {
         return oAuthHost;
     }
@@ -40,5 +45,29 @@ public class KickConfiguration {
 
     public void setTokenEndpoint(String tokenEndpoint) {
         this.tokenEndpoint = tokenEndpoint;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public String getCategoriesUrl() {
+        return categoriesUrl;
+    }
+
+    public void setCategoriesUrl(String categoriesUrl) {
+        this.categoriesUrl = categoriesUrl;
+    }
+
+    public String getCategoriesIdUrl() {
+        return categoriesIdUrl;
+    }
+
+    public void setCategoriesIdUrl(String categoriesIdUrl) {
+        this.categoriesIdUrl = categoriesIdUrl;
     }
 }

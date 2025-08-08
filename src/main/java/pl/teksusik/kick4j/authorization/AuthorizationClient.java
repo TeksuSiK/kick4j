@@ -149,7 +149,6 @@ public class AuthorizationClient {
                 "grant_type", "refresh_token"
         );
 
-
         return this.postOAuthTokenRequest(body);
     }
 

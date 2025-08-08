@@ -1,5 +1,6 @@
 package pl.teksusik.kick4j.authorization;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class OAuthTokenResponse {
@@ -9,6 +10,7 @@ public class OAuthTokenResponse {
     private final int expiresIn;
     private final String scope;
 
+    @JsonCreator
     public OAuthTokenResponse(@JsonProperty("access_token") String accessToken,
                               @JsonProperty("token_type") String tokenType,
                               @JsonProperty("refresh_token") String refreshToken,
