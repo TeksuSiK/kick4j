@@ -20,8 +20,11 @@ public class KickConfiguration {
 
     private String baseUrl = "https://api.kick.com/public/v1";
 
-    private String categoriesUrl = "/categories";
-    private String categoriesIdUrl = "/categories/{id}";
+    private String categories = "/categories";
+    private String categoriesId = "/categories/{id}";
+
+    private String tokenIntrospect = "/token/introspect";
+    private String users = "/users";
 
     public String getOAuthHost() {
         return oAuthHost;
@@ -55,19 +58,35 @@ public class KickConfiguration {
         this.baseUrl = baseUrl;
     }
 
-    public String getCategoriesUrl() {
-        return categoriesUrl;
+    public String getCategories() {
+        return categories;
     }
 
-    public void setCategoriesUrl(String categoriesUrl) {
-        this.categoriesUrl = categoriesUrl;
+    public void setCategories(String categories) {
+        this.categories = categories;
     }
 
-    public String getCategoriesIdUrl() {
-        return categoriesIdUrl;
+    public String getCategoriesId() {
+        return categoriesId;
     }
 
-    public void setCategoriesIdUrl(String categoriesIdUrl) {
-        this.categoriesIdUrl = categoriesIdUrl;
+    public void setCategoriesId(String categoriesId) {
+        this.categoriesId = categoriesId;
+    }
+
+    public String getTokenIntrospect() {
+        return tokenIntrospect;
+    }
+
+    public void setTokenIntrospect(String tokenIntrospect) {
+        this.tokenIntrospect = tokenIntrospect;
+    }
+
+    public String getUsers() {
+        return users;
+    }
+
+    public void setUsers(String users) {
+        this.users = users;
     }
 }

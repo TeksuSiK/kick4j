@@ -6,12 +6,14 @@ import pl.teksusik.kick4j.api.ApiResponse;
 import pl.teksusik.kick4j.api.ApiResponseDeserializer;
 import pl.teksusik.kick4j.authorization.AuthorizationClient;
 import pl.teksusik.kick4j.categories.CategoriesClient;
+import pl.teksusik.kick4j.users.UsersClient;
 
 import java.net.http.HttpClient;
 
 public class KickClient {
     private final AuthorizationClient authorizationClient;
     private final CategoriesClient categoriesClient;
+    private final UsersClient usersClient;
 
     public KickClient(String clientId, String clientSecret, String redirectUri) {
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -22,6 +24,7 @@ public class KickClient {
 
         this.authorizationClient = new AuthorizationClient(httpClient, objectMapper, clientId, clientSecret, redirectUri);
         this.categoriesClient = new CategoriesClient(httpClient, objectMapper, this.authorizationClient);
+        this.usersClient = new UsersClient(httpClient, objectMapper, this.authorizationClient);
     }
 
     public AuthorizationClient authorization() {
@@ -30,5 +33,9 @@ public class KickClient {
 
     public CategoriesClient categories() {
         return categoriesClient;
+    }
+
+    public UsersClient users() {
+        return usersClient;
     }
 }

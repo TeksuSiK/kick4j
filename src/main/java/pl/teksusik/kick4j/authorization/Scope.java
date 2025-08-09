@@ -3,7 +3,7 @@ package pl.teksusik.kick4j.authorization;
 public enum Scope {
     USER_READ("user:read"),
     CHANNEL_READ("channel:read"),
-    CHANNEL_WRITE("channel_write"),
+    CHANNEL_WRITE("channel:write"),
     CHAT_WRITE("chat:write"),
     STREAMKEY_READ("streamkey:read"),
     EVENTS_SUBSCRIBE("events:subscribe"),

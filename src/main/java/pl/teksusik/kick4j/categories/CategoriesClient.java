@@ -19,14 +19,14 @@ public class CategoriesClient extends ApiClient {
     }
 
     public List<Category> getCategories(String query, int page) {
-        return this.get(this.configuration.getCategoriesUrl())
+        return this.get(this.configuration.getCategories())
                 .queryParams(Map.of("q", query,
                         "page", page))
                 .send(new TypeReference<>() {});
     }
 
     public Category getCategory(int categoryId) {
-        return this.get(this.configuration.getCategoriesIdUrl())
+        return this.get(this.configuration.getCategoriesId())
                 .pathParams(Map.of("id", categoryId))
                 .send(new TypeReference<>() {});
     }

@@ -6,6 +6,7 @@ import pl.teksusik.kick4j.KickConfiguration;
 import pl.teksusik.kick4j.authorization.AuthorizationClient;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -55,7 +56,7 @@ public abstract class ApiClient {
 
         public RequestBuilder pathParams(Map<String, Object> params) {
             for (Map.Entry<String, Object> entry : params.entrySet()) {
-                String placeholder = "\\{" + entry.getKey() + "\\}";        // regex na np {id}
+                String placeholder = "\\{" + entry.getKey() + "\\}";
                 String encodedValue = encode(entry.getValue().toString());
                 this.path = this.path.replaceAll(placeholder, encodedValue);
             }
@@ -69,7 +70,7 @@ public abstract class ApiClient {
 
         public <T> T send(TypeReference<ApiResponse<T>> typeRef) {
             try {
-                String url = buildUrl(configuration.getBaseUrl() + path, queryParams);
+                String url = buildUrl(configuration.getBaseUrl() + this.path, this.queryParams);
                 HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                         .uri(URI.create(url))
                         .header("Authorization", "Bearer " + authorization.getAccessToken())
@@ -78,9 +79,9 @@ public abstract class ApiClient {
                 if ("GET".equalsIgnoreCase(method)) {
                     requestBuilder.GET();
                 } else {
-                    String jsonBody = bodyObject == null ? "" : mapper.writeValueAsString(bodyObject);
+                    String jsonBody = this.bodyObject == null ? "" : mapper.writeValueAsString(this.bodyObject);
                     requestBuilder.header("Content-Type", "application/json");
-                    requestBuilder.method(method, HttpRequest.BodyPublishers.ofString(jsonBody));
+                    requestBuilder.method(this.method, HttpRequest.BodyPublishers.ofString(jsonBody));
                 }
 
                 HttpResponse<String> response = httpClient.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
@@ -90,9 +91,9 @@ public abstract class ApiClient {
                 }
 
                 return apiResponse.getData();
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException | InterruptedException exception) {
                 Thread.currentThread().interrupt();
-                throw new RuntimeException("API request failed", e);
+                throw new RuntimeException("Failed to send API request", exception);
             }
         }
     }
@@ -104,7 +105,22 @@ public abstract class ApiClient {
 
         StringJoiner joiner = new StringJoiner("&", path + "?", "");
         for (Map.Entry<String, Object> param : queryParams.entrySet()) {
-            joiner.add(encode(param.getKey()) + "=" + encode(param.getValue().toString()));
+            Object value = param.getValue();
+
+            if (value instanceof Iterable<?>) {
+                for (Object v : (Iterable<?>) value) {
+                    joiner.add(encode(param.getKey()) + "=" + encode(String.valueOf(v)));
+                }
+            } else if (value != null && value.getClass().isArray()) {
+                int length = Array.getLength(value);
+
+                for (int i = 0; i < length; i++) {
+                    Object v = Array.get(value, i);
+                    joiner.add(encode(param.getKey()) + "=" + encode(String.valueOf(v)));
+                }
+            } else {
+                joiner.add(encode(param.getKey()) + "=" + encode(String.valueOf(value)));
+            }
         }
 
         return joiner.toString();
