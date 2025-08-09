@@ -40,6 +40,9 @@ public class KickConfiguration {
     // Livestreams
     private String livestreams = "/livestreams";
 
+    // Public Key
+    private String publicKey = "/public-key";
+
     public String getOAuthHost() {
         return oAuthHost;
     }
@@ -134,5 +137,13 @@ public class KickConfiguration {
 
     public void setLivestreams(String livestreams) {
         this.livestreams = livestreams;
+    }
+
+    public String getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(String publicKey) {
+        this.publicKey = publicKey;
     }
 }

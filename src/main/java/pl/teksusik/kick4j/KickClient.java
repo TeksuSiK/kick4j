@@ -11,6 +11,7 @@ import pl.teksusik.kick4j.channels.ChannelsClient;
 import pl.teksusik.kick4j.chat.ChatClient;
 import pl.teksusik.kick4j.livestreams.LivestreamsClient;
 import pl.teksusik.kick4j.moderation.ModerationClient;
+import pl.teksusik.kick4j.publicKey.PublicKeyClient;
 import pl.teksusik.kick4j.users.UsersClient;
 
 import java.net.http.HttpClient;
@@ -23,6 +24,7 @@ public class KickClient {
     private final ChatClient chatClient;
     private final ModerationClient moderationClient;
     private final LivestreamsClient livestreamsClient;
+    private final PublicKeyClient publicKeyClient;
 
     public KickClient(String clientId, String clientSecret, String redirectUri) {
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -39,6 +41,7 @@ public class KickClient {
         this.chatClient = new ChatClient(httpClient, objectMapper, this.authorizationClient);
         this.moderationClient = new ModerationClient(httpClient, objectMapper, this.authorizationClient);
         this.livestreamsClient = new LivestreamsClient(httpClient, objectMapper, this.authorizationClient);
+        this.publicKeyClient = new PublicKeyClient(httpClient, objectMapper, this.authorizationClient);
     }
 
     public AuthorizationClient authorization() {
@@ -67,5 +70,9 @@ public class KickClient {
 
     public LivestreamsClient livestreams() {
         return livestreamsClient;
+    }
+
+    public PublicKeyClient publicKey() {
+        return publicKeyClient;
     }
 }
