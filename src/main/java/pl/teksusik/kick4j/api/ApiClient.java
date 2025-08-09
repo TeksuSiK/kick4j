@@ -41,6 +41,10 @@ public abstract class ApiClient {
         return new RequestBuilder("PATCH", path);
     }
 
+    protected RequestBuilder delete(String path) {
+        return new RequestBuilder("DELETE", path);
+    }
+
     public class RequestBuilder {
         private final String method;
         private String path;
@@ -95,7 +99,7 @@ public abstract class ApiClient {
                 }
 
                 ApiResponse<T> apiResponse = mapper.readValue(response.body(), typeRef);
-                if (!apiResponse.isSuccess()) {
+                if (!apiResponse.isSuccess() && response.statusCode() >= 400) {
                     throw new ApiException(response.statusCode(), apiResponse.getMessage());
                 }
 

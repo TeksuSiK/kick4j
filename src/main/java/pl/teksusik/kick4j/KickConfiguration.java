@@ -34,6 +34,9 @@ public class KickConfiguration {
     // Chat
     private String chat = "/chat";
 
+    // Moderation
+    private String moderation = "/moderation/bans";
+
     public String getOAuthHost() {
         return oAuthHost;
     }
@@ -112,5 +115,13 @@ public class KickConfiguration {
 
     public void setChat(String chat) {
         this.chat = chat;
+    }
+
+    public String getModeration() {
+        return moderation;
+    }
+
+    public void setModeration(String moderation) {
+        this.moderation = moderation;
     }
 }
