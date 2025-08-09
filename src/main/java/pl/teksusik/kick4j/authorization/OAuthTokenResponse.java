@@ -7,14 +7,14 @@ public class OAuthTokenResponse {
     private final String accessToken;
     private final String tokenType;
     private final String refreshToken;
-    private final int expiresIn;
+    private final Integer expiresIn;
     private final String scope;
 
     @JsonCreator
     public OAuthTokenResponse(@JsonProperty("access_token") String accessToken,
                               @JsonProperty("token_type") String tokenType,
                               @JsonProperty("refresh_token") String refreshToken,
-                              @JsonProperty("expires_in") int expiresIn,
+                              @JsonProperty("expires_in") Integer expiresIn,
                               @JsonProperty("scope") String scope) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
@@ -35,7 +35,7 @@ public class OAuthTokenResponse {
         return refreshToken;
     }
 
-    public int getExpiresIn() {
+    public Integer getExpiresIn() {
         return expiresIn;
     }
 

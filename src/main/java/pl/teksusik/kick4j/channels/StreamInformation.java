@@ -4,24 +4,24 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class StreamInformation {
-    private final boolean isLive;
-    private final boolean isMature;
+    private final Boolean isLive;
+    private final Boolean isMature;
     private final String key;
     private final String language;
     private final String startTime;
     private final String thumbnail;
     private final String url;
-    private final int viewerCount;
+    private final Integer viewerCount;
 
     @JsonCreator
-    public StreamInformation(@JsonProperty("is_live") boolean isLive,
-                             @JsonProperty("is_mature") boolean isMature,
+    public StreamInformation(@JsonProperty("is_live") Boolean isLive,
+                             @JsonProperty("is_mature") Boolean isMature,
                              @JsonProperty("key") String key,
                              @JsonProperty("language") String language,
                              @JsonProperty("start_time") String startTime,
                              @JsonProperty("thumbnail") String thumbnail,
                              @JsonProperty("url") String url,
-                             @JsonProperty("viewer_count")  int viewerCount) {
+                             @JsonProperty("viewer_count")  Integer viewerCount) {
         this.isLive = isLive;
         this.isMature = isMature;
         this.key = key;
@@ -32,11 +32,11 @@ public class StreamInformation {
         this.viewerCount = viewerCount;
     }
 
-    public boolean isLive() {
+    public Boolean isLive() {
         return isLive;
     }
 
-    public boolean isMature() {
+    public Boolean isMature() {
         return isMature;
     }
 
@@ -60,7 +60,7 @@ public class StreamInformation {
         return url;
     }
 
-    public int getViewerCount() {
+    public Integer getViewerCount() {
         return viewerCount;
     }
 }

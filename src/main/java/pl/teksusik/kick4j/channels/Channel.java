@@ -6,7 +6,7 @@ import pl.teksusik.kick4j.categories.Category;
 
 public class Channel {
     private final String bannerPicture;
-    private final int broadcasterUserId;
+    private final Integer broadcasterUserId;
     private final Category category;
     private final String channelDescription;
     private final String slug;
@@ -15,7 +15,7 @@ public class Channel {
 
     @JsonCreator
     public Channel(@JsonProperty("banner_picture") String bannerPicture,
-                   @JsonProperty("broadcaster_user_id") int broadcasterUserId,
+                   @JsonProperty("broadcaster_user_id") Integer broadcasterUserId,
                    @JsonProperty("category") Category category,
                    @JsonProperty("channel_description") String channelDescription,
                    @JsonProperty("slug") String slug,
@@ -34,7 +34,7 @@ public class Channel {
         return bannerPicture;
     }
 
-    public int getBroadcasterUserId() {
+    public Integer getBroadcasterUserId() {
         return broadcasterUserId;
     }
 

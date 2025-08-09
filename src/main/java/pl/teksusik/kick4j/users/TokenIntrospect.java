@@ -4,16 +4,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TokenIntrospect {
-    private final boolean active;
+    private final Boolean active;
     private final String clientId;
-    private final int exp;
+    private final Integer exp;
     private final String scope;
     private final String tokenType;
 
     @JsonCreator
-    public TokenIntrospect(@JsonProperty("active") boolean active,
+    public TokenIntrospect(@JsonProperty("active") Boolean active,
                            @JsonProperty("client_id") String clientId,
-                           @JsonProperty("exp") int exp,
+                           @JsonProperty("exp") Integer exp,
                            @JsonProperty("scope") String scope,
                            @JsonProperty("token_type") String tokenType) {
         this.active = active;
@@ -23,7 +23,7 @@ public class TokenIntrospect {
         this.tokenType = tokenType;
     }
 
-    public boolean isActive() {
+    public Boolean isActive() {
         return active;
     }
 
@@ -31,7 +31,7 @@ public class TokenIntrospect {
         return clientId;
     }
 
-    public int getExp() {
+    public Integer getExp() {
         return exp;
     }
 

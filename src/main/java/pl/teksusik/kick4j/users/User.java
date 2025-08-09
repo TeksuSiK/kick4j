@@ -7,13 +7,13 @@ public class User {
     private final String email;
     private final String name;
     private final String profilePicture;
-    private final int userId;
+    private final Integer userId;
 
     @JsonCreator
     public User(@JsonProperty("email") String email,
                 @JsonProperty("name") String name,
                 @JsonProperty("profile_picture") String profilePicture,
-                @JsonProperty("user_id") int userId) {
+                @JsonProperty("user_id") Integer userId) {
         this.email = email;
         this.name = name;
         this.profilePicture = profilePicture;
@@ -32,7 +32,7 @@ public class User {
         return profilePicture;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 }
