@@ -29,12 +29,16 @@ public abstract class ApiClient {
         this.authorization = authorization;
     }
 
-    public RequestBuilder get(String path) {
+    protected RequestBuilder get(String path) {
         return new RequestBuilder("GET", path);
     }
 
-    public RequestBuilder post(String path) {
+    protected RequestBuilder post(String path) {
         return new RequestBuilder("POST", path);
+    }
+
+    protected RequestBuilder patch(String path) {
+        return new RequestBuilder("PATCH", path);
     }
 
     public class RequestBuilder {
@@ -85,6 +89,11 @@ public abstract class ApiClient {
                 }
 
                 HttpResponse<String> response = httpClient.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+                String body = response.body();
+                if (body == null || body.isEmpty()) {
+                    return null;
+                }
+
                 ApiResponse<T> apiResponse = mapper.readValue(response.body(), typeRef);
                 if (!apiResponse.isSuccess()) {
                     throw new ApiException(response.statusCode(), apiResponse.getMessage());

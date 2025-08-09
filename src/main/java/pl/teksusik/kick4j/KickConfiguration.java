@@ -20,11 +20,16 @@ public class KickConfiguration {
 
     private String baseUrl = "https://api.kick.com/public/v1";
 
+    // Categories
     private String categories = "/categories";
     private String categoriesId = "/categories/{id}";
 
+    // Users
     private String tokenIntrospect = "/token/introspect";
     private String users = "/users";
+
+    // Channels
+    private String channels = "/channels";
 
     public String getOAuthHost() {
         return oAuthHost;
@@ -88,5 +93,13 @@ public class KickConfiguration {
 
     public void setUsers(String users) {
         this.users = users;
+    }
+
+    public String getChannels() {
+        return channels;
+    }
+
+    public void setChannels(String channels) {
+        this.channels = channels;
     }
 }
