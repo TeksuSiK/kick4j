@@ -31,9 +31,9 @@ public class AuthorizationClient {
     private final HttpClient httpClient;
     private final ObjectMapper mapper;
     private final KickConfiguration configuration;
+    private final RefreshTokenStore refreshToken;
 
     private String accessToken;
-    private String refreshToken;
     private Instant expiresAt;
 
     /**
@@ -42,10 +42,11 @@ public class AuthorizationClient {
      * @param httpClient   the HttpClient used for HTTP requests
      * @param mapper       ObjectMapper used to parse JSON responses
      */
-    public AuthorizationClient(HttpClient httpClient, ObjectMapper mapper, KickConfiguration configuration) {
+    public AuthorizationClient(HttpClient httpClient, ObjectMapper mapper, KickConfiguration configuration, RefreshTokenStore refreshToken) {
         this.httpClient = httpClient;
         this.mapper = mapper;
         this.configuration = configuration;
+        this.refreshToken = refreshToken;
     }
 
     /**
@@ -132,13 +133,15 @@ public class AuthorizationClient {
      */
     public OAuthTokenResponse refreshAccessToken() {
         Map<String, String> body = Map.of(
-                "refresh_token", this.refreshToken,
+                "refresh_token", this.refreshToken.getRefreshToken(),
                 "client_id", this.configuration.getClientId(),
                 "client_secret", this.configuration.getClientSecret(),
                 "grant_type", "refresh_token"
         );
 
-        return this.postOAuthTokenRequest(body);
+        OAuthTokenResponse newToken = this.postOAuthTokenRequest(body);
+        this.refreshToken.notifyRefreshTokenRoll(newToken.getRefreshToken());
+        return newToken;
     }
 
     /**
@@ -147,7 +150,7 @@ public class AuthorizationClient {
      * @return a valid OAuth access token string
      */
     public String getAccessToken() {
-        if (this.accessToken == null || Instant.now().isAfter(this.expiresAt)) {
+        if (this.accessToken == null || Instant.now().isAfter(this.expiresAt.minusSeconds(10))) {
             OAuthTokenResponse response = this.refreshAccessToken();
             this.setTokens(response);
         }
@@ -162,7 +165,7 @@ public class AuthorizationClient {
      */
     public void setTokens(OAuthTokenResponse oAuthToken) {
         this.accessToken = oAuthToken.getAccessToken();
-        this.refreshToken = oAuthToken.getRefreshToken();
+        this.refreshToken.notifyRefreshTokenRoll(oAuthToken.getRefreshToken());
         this.expiresAt = Instant.now().plusSeconds(oAuthToken.getExpiresIn());
     }
 
@@ -173,15 +176,6 @@ public class AuthorizationClient {
      */
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
-    }
-
-    /**
-     * Sets the refresh token manually.
-     *
-     * @param refreshToken new refresh token
-     */
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
     }
 
     /**

@@ -8,6 +8,7 @@ import com.sun.net.httpserver.HttpServer;
 import pl.teksusik.kick4j.api.ApiResponse;
 import pl.teksusik.kick4j.api.ApiResponseDeserializer;
 import pl.teksusik.kick4j.authorization.AuthorizationClient;
+import pl.teksusik.kick4j.authorization.RefreshTokenStore;
 import pl.teksusik.kick4j.categories.CategoriesClient;
 import pl.teksusik.kick4j.channels.ChannelsClient;
 import pl.teksusik.kick4j.chat.ChatClient;
@@ -39,7 +40,7 @@ public class KickClient {
 
     private HttpServer httpServer;
 
-    public KickClient(KickConfiguration configuration) {
+    public KickClient(KickConfiguration configuration, RefreshTokenStore tokenStore) {
         HttpClient httpClient = HttpClient.newHttpClient();
 
         SimpleModule serializerModule = new SimpleModule()
@@ -49,7 +50,7 @@ public class KickClient {
                 .registerModule(new JavaTimeModule())
                 .registerModule(serializerModule);
 
-        this.authorizationClient = new AuthorizationClient(httpClient, objectMapper, configuration);
+        this.authorizationClient = new AuthorizationClient(httpClient, objectMapper, configuration, tokenStore);
         this.categoriesClient = new CategoriesClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.usersClient = new UsersClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.channelsClient = new ChannelsClient(httpClient, objectMapper, configuration, this.authorizationClient);
