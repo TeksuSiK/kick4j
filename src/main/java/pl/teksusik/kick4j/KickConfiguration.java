@@ -43,6 +43,9 @@ public class KickConfiguration {
     // Public Key
     private String publicKey = "/public-key";
 
+    // Events
+    private String events = "/events/subscriptions";
+
     public String getOAuthHost() {
         return oAuthHost;
     }
@@ -145,5 +148,13 @@ public class KickConfiguration {
 
     public void setPublicKey(String publicKey) {
         this.publicKey = publicKey;
+    }
+
+    public String getEvents() {
+        return events;
+    }
+
+    public void setEvents(String events) {
+        this.events = events;
     }
 }

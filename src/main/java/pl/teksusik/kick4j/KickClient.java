@@ -3,17 +3,25 @@ package pl.teksusik.kick4j;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.sun.net.httpserver.HttpServer;
 import pl.teksusik.kick4j.api.ApiResponse;
 import pl.teksusik.kick4j.api.ApiResponseDeserializer;
 import pl.teksusik.kick4j.authorization.AuthorizationClient;
 import pl.teksusik.kick4j.categories.CategoriesClient;
 import pl.teksusik.kick4j.channels.ChannelsClient;
 import pl.teksusik.kick4j.chat.ChatClient;
+import pl.teksusik.kick4j.events.EventsClient;
+import pl.teksusik.kick4j.events.handler.BuiltInKickWebhookHandler;
+import pl.teksusik.kick4j.events.handler.KickEventDispatcher;
+import pl.teksusik.kick4j.events.handler.KickSignatureVerifier;
 import pl.teksusik.kick4j.livestreams.LivestreamsClient;
 import pl.teksusik.kick4j.moderation.ModerationClient;
 import pl.teksusik.kick4j.publicKey.PublicKeyClient;
 import pl.teksusik.kick4j.users.UsersClient;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.http.HttpClient;
 
 public class KickClient {
@@ -25,6 +33,11 @@ public class KickClient {
     private final ModerationClient moderationClient;
     private final LivestreamsClient livestreamsClient;
     private final PublicKeyClient publicKeyClient;
+    private final EventsClient eventsClient;
+    private final KickSignatureVerifier signatureVerifier;
+    private final KickEventDispatcher eventDispatcher;
+
+    private HttpServer httpServer;
 
     public KickClient(String clientId, String clientSecret, String redirectUri) {
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -32,6 +45,7 @@ public class KickClient {
                 .addDeserializer(ApiResponse.class, new ApiResponseDeserializer<>());
         ObjectMapper objectMapper = new ObjectMapper()
                 .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
+                .registerModule(new JavaTimeModule())
                 .registerModule(module);
 
         this.authorizationClient = new AuthorizationClient(httpClient, objectMapper, clientId, clientSecret, redirectUri);
@@ -42,6 +56,29 @@ public class KickClient {
         this.moderationClient = new ModerationClient(httpClient, objectMapper, this.authorizationClient);
         this.livestreamsClient = new LivestreamsClient(httpClient, objectMapper, this.authorizationClient);
         this.publicKeyClient = new PublicKeyClient(httpClient, objectMapper, this.authorizationClient);
+        this.eventsClient = new EventsClient(httpClient, objectMapper, this.authorizationClient);
+
+        this.signatureVerifier = new KickSignatureVerifier(this.publicKeyClient);
+        this.eventDispatcher = new KickEventDispatcher(objectMapper);
+    }
+
+    public void startWebhookReceiver(String path, int port) {
+        try {
+            this.httpServer = HttpServer.create(new InetSocketAddress(port), 0);
+            this.httpServer.createContext(path, new BuiltInKickWebhookHandler(this.signatureVerifier, this.eventDispatcher));
+            this.httpServer.setExecutor(null);
+            this.httpServer.start();
+        } catch (IOException exception) {
+            throw new RuntimeException("Failed to start web server", exception);
+        }
+    }
+
+    public void stopWebhookReceiver() {
+        if (this.httpServer == null) {
+            throw new IllegalStateException("Web server is not running");
+        }
+
+        this.httpServer.stop(100);
     }
 
     public AuthorizationClient authorization() {
@@ -74,5 +111,17 @@ public class KickClient {
 
     public PublicKeyClient publicKey() {
         return publicKeyClient;
+    }
+
+    public EventsClient events() {
+        return eventsClient;
+    }
+
+    public KickSignatureVerifier signatureVerifier() {
+        return signatureVerifier;
+    }
+
+    public KickEventDispatcher eventDispatcher() {
+        return eventDispatcher;
     }
 }
