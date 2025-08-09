@@ -2,6 +2,7 @@ package pl.teksusik.kick4j.events;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import pl.teksusik.kick4j.KickConfiguration;
 import pl.teksusik.kick4j.api.ApiClient;
 import pl.teksusik.kick4j.authorization.AuthorizationClient;
 
@@ -10,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 public class EventsClient extends ApiClient {
-    public EventsClient(HttpClient httpClient, ObjectMapper mapper, AuthorizationClient authorization) {
-        super(httpClient, mapper, authorization);
+    public EventsClient(HttpClient httpClient, ObjectMapper mapper, KickConfiguration configuration, AuthorizationClient authorization) {
+        super(httpClient, mapper, configuration, authorization);
     }
 
     public List<EventSubscription> getEventsSubscriptions() {

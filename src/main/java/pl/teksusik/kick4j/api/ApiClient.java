@@ -22,10 +22,10 @@ public abstract class ApiClient {
     protected final KickConfiguration configuration;
     protected final AuthorizationClient authorization;
 
-    protected ApiClient(HttpClient httpClient, ObjectMapper mapper, AuthorizationClient authorization) {
+    protected ApiClient(HttpClient httpClient, ObjectMapper mapper, KickConfiguration configuration, AuthorizationClient authorization) {
         this.httpClient = httpClient;
         this.mapper = mapper;
-        this.configuration = KickConfiguration.getConfiguration();
+        this.configuration = configuration;
         this.authorization = authorization;
     }
 

@@ -32,10 +32,6 @@ public class AuthorizationClient {
     private final ObjectMapper mapper;
     private final KickConfiguration configuration;
 
-    private final String clientId;
-    private final String clientSecret;
-    private final String redirectUri;
-
     private String accessToken;
     private String refreshToken;
     private Instant expiresAt;
@@ -45,18 +41,11 @@ public class AuthorizationClient {
      *
      * @param httpClient   the HttpClient used for HTTP requests
      * @param mapper       ObjectMapper used to parse JSON responses
-     * @param clientId     OAuth client ID issued by Kick
-     * @param clientSecret OAuth client secret issued by Kick
-     * @param redirectUri  Redirect URI registered with the OAuth provider
      */
-    public AuthorizationClient(HttpClient httpClient, ObjectMapper mapper, String clientId, String clientSecret, String redirectUri) {
+    public AuthorizationClient(HttpClient httpClient, ObjectMapper mapper, KickConfiguration configuration) {
         this.httpClient = httpClient;
         this.mapper = mapper;
-        this.configuration = KickConfiguration.getConfiguration();
-
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-        this.redirectUri = redirectUri;
+        this.configuration = configuration;
     }
 
     /**
@@ -100,9 +89,9 @@ public class AuthorizationClient {
         StringJoiner joiner = new StringJoiner("&",
                 this.configuration.getOAuthHost() + this.configuration.getAuthorizationEndpoint() + "?",
                 "");
-        joiner.add("client_id=" + encodeUrl(this.clientId));
+        joiner.add("client_id=" + encodeUrl(this.configuration.getClientId()));
         joiner.add("response_type=code");
-        joiner.add("redirect_uri=" + encodeUrl(this.redirectUri));
+        joiner.add("redirect_uri=" + encodeUrl(this.configuration.getRedirectUri()));
         // Kick API requires state parameter but does not use it afterwards – generated here for best practice
         joiner.add("state=" + encodeUrl(UUID.randomUUID().toString()));
         String scopes = scopeList.stream()
@@ -126,9 +115,9 @@ public class AuthorizationClient {
     public OAuthTokenResponse exchangeCodeForToken(String code, String codeVerifier) {
         Map<String, String> body = Map.of(
                 "code", code,
-                "client_id", this.clientId,
-                "client_secret", this.clientSecret,
-                "redirect_uri", this.redirectUri,
+                "client_id", this.configuration.getClientId(),
+                "client_secret", this.configuration.getClientSecret(),
+                "redirect_uri", this.configuration.getRedirectUri(),
                 "grant_type", "authorization_code",
                 "code_verifier", codeVerifier
         );
@@ -144,8 +133,8 @@ public class AuthorizationClient {
     public OAuthTokenResponse refreshAccessToken() {
         Map<String, String> body = Map.of(
                 "refresh_token", this.refreshToken,
-                "client_id", this.clientId,
-                "client_secret", this.clientSecret,
+                "client_id", this.configuration.getClientId(),
+                "client_secret", this.configuration.getClientSecret(),
                 "grant_type", "refresh_token"
         );
 

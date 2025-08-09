@@ -39,24 +39,25 @@ public class KickClient {
 
     private HttpServer httpServer;
 
-    public KickClient(String clientId, String clientSecret, String redirectUri) {
+    public KickClient(KickConfiguration configuration) {
         HttpClient httpClient = HttpClient.newHttpClient();
-        SimpleModule module = new SimpleModule()
+
+        SimpleModule serializerModule = new SimpleModule()
                 .addDeserializer(ApiResponse.class, new ApiResponseDeserializer<>());
         ObjectMapper objectMapper = new ObjectMapper()
                 .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
                 .registerModule(new JavaTimeModule())
-                .registerModule(module);
+                .registerModule(serializerModule);
 
-        this.authorizationClient = new AuthorizationClient(httpClient, objectMapper, clientId, clientSecret, redirectUri);
-        this.categoriesClient = new CategoriesClient(httpClient, objectMapper, this.authorizationClient);
-        this.usersClient = new UsersClient(httpClient, objectMapper, this.authorizationClient);
-        this.channelsClient = new ChannelsClient(httpClient, objectMapper, this.authorizationClient);
-        this.chatClient = new ChatClient(httpClient, objectMapper, this.authorizationClient);
-        this.moderationClient = new ModerationClient(httpClient, objectMapper, this.authorizationClient);
-        this.livestreamsClient = new LivestreamsClient(httpClient, objectMapper, this.authorizationClient);
-        this.publicKeyClient = new PublicKeyClient(httpClient, objectMapper, this.authorizationClient);
-        this.eventsClient = new EventsClient(httpClient, objectMapper, this.authorizationClient);
+        this.authorizationClient = new AuthorizationClient(httpClient, objectMapper, configuration);
+        this.categoriesClient = new CategoriesClient(httpClient, objectMapper, configuration, this.authorizationClient);
+        this.usersClient = new UsersClient(httpClient, objectMapper, configuration, this.authorizationClient);
+        this.channelsClient = new ChannelsClient(httpClient, objectMapper, configuration, this.authorizationClient);
+        this.chatClient = new ChatClient(httpClient, objectMapper, configuration, this.authorizationClient);
+        this.moderationClient = new ModerationClient(httpClient, objectMapper, configuration, this.authorizationClient);
+        this.livestreamsClient = new LivestreamsClient(httpClient, objectMapper, configuration, this.authorizationClient);
+        this.publicKeyClient = new PublicKeyClient(httpClient, objectMapper, configuration, this.authorizationClient);
+        this.eventsClient = new EventsClient(httpClient, objectMapper, configuration, this.authorizationClient);
 
         this.signatureVerifier = new KickSignatureVerifier(this.publicKeyClient);
         this.eventDispatcher = new KickEventDispatcher(objectMapper);

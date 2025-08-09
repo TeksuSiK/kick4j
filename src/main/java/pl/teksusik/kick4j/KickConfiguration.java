@@ -1,160 +1,234 @@
 package pl.teksusik.kick4j;
 
-public class KickConfiguration {
-    private static KickConfiguration configuration;
+public final class KickConfiguration {
+    private final String clientId;
+    private final String clientSecret;
+    private final String redirectUri;
+    private final String oAuthHost;
+    private final String authorizationEndpoint;
+    private final String tokenEndpoint;
+    private final String baseUrl;
+    private final String categories;
+    private final String categoriesId;
+    private final String tokenIntrospect;
+    private final String users;
+    private final String channels;
+    private final String chat;
+    private final String moderation;
+    private final String livestreams;
+    private final String publicKey;
+    private final String events;
 
-    private KickConfiguration() {
+    private KickConfiguration(Builder builder) {
+        this.clientId = builder.clientId;
+        this.clientSecret = builder.clientSecret;
+        this.redirectUri = builder.redirectUri;
+        this.oAuthHost = builder.oAuthHost;
+        this.authorizationEndpoint = builder.authorizationEndpoint;
+        this.tokenEndpoint = builder.tokenEndpoint;
+        this.baseUrl = builder.baseUrl;
+        this.categories = builder.categories;
+        this.categoriesId = builder.categoriesId;
+        this.tokenIntrospect = builder.tokenIntrospect;
+        this.users = builder.users;
+        this.channels = builder.channels;
+        this.chat = builder.chat;
+        this.moderation = builder.moderation;
+        this.livestreams = builder.livestreams;
+        this.publicKey = builder.publicKey;
+        this.events = builder.events;
     }
 
-    public static KickConfiguration getConfiguration() {
-        if (configuration == null) {
-            configuration = new KickConfiguration();
-        }
-
-        return configuration;
+    public static Builder builder() {
+        return new Builder();
     }
 
-    private String oAuthHost = "https://id.kick.com";
-    private String authorizationEndpoint = "/oauth/authorize";
-    private String tokenEndpoint = "/oauth/token";
+    public String getClientId() {
+        return clientId;
+    }
 
-    private String baseUrl = "https://api.kick.com/public/v1";
+    public String getClientSecret() {
+        return clientSecret;
+    }
 
-    // Categories
-    private String categories = "/categories";
-    private String categoriesId = "/categories/{id}";
-
-    // Users
-    private String tokenIntrospect = "/token/introspect";
-    private String users = "/users";
-
-    // Channels
-    private String channels = "/channels";
-
-    // Chat
-    private String chat = "/chat";
-
-    // Moderation
-    private String moderation = "/moderation/bans";
-
-    // Livestreams
-    private String livestreams = "/livestreams";
-
-    // Public Key
-    private String publicKey = "/public-key";
-
-    // Events
-    private String events = "/events/subscriptions";
+    public String getRedirectUri() {
+        return redirectUri;
+    }
 
     public String getOAuthHost() {
         return oAuthHost;
-    }
-
-    public void setOAuthHost(String oAuthHost) {
-        this.oAuthHost = oAuthHost;
     }
 
     public String getAuthorizationEndpoint() {
         return authorizationEndpoint;
     }
 
-    public void setAuthorizationEndpoint(String authorizationEndpoint) {
-        this.authorizationEndpoint = authorizationEndpoint;
-    }
-
     public String getTokenEndpoint() {
         return tokenEndpoint;
-    }
-
-    public void setTokenEndpoint(String tokenEndpoint) {
-        this.tokenEndpoint = tokenEndpoint;
     }
 
     public String getBaseUrl() {
         return baseUrl;
     }
 
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
-
     public String getCategories() {
         return categories;
-    }
-
-    public void setCategories(String categories) {
-        this.categories = categories;
     }
 
     public String getCategoriesId() {
         return categoriesId;
     }
 
-    public void setCategoriesId(String categoriesId) {
-        this.categoriesId = categoriesId;
-    }
-
     public String getTokenIntrospect() {
         return tokenIntrospect;
-    }
-
-    public void setTokenIntrospect(String tokenIntrospect) {
-        this.tokenIntrospect = tokenIntrospect;
     }
 
     public String getUsers() {
         return users;
     }
 
-    public void setUsers(String users) {
-        this.users = users;
-    }
-
     public String getChannels() {
         return channels;
-    }
-
-    public void setChannels(String channels) {
-        this.channels = channels;
     }
 
     public String getChat() {
         return chat;
     }
 
-    public void setChat(String chat) {
-        this.chat = chat;
-    }
-
     public String getModeration() {
         return moderation;
-    }
-
-    public void setModeration(String moderation) {
-        this.moderation = moderation;
     }
 
     public String getLivestreams() {
         return livestreams;
     }
 
-    public void setLivestreams(String livestreams) {
-        this.livestreams = livestreams;
-    }
-
     public String getPublicKey() {
         return publicKey;
-    }
-
-    public void setPublicKey(String publicKey) {
-        this.publicKey = publicKey;
     }
 
     public String getEvents() {
         return events;
     }
 
-    public void setEvents(String events) {
-        this.events = events;
+    public static final class Builder {
+        private String clientId;
+        private String clientSecret;
+        private String redirectUri;
+        private String oAuthHost = "https://id.kick.com";
+        private String authorizationEndpoint = "/oauth/authorize";
+        private String tokenEndpoint = "/oauth/token";
+        private String baseUrl = "https://api.kick.com/public/v1";
+        private String categories = "/categories";
+        private String categoriesId = "/categories/{id}";
+        private String tokenIntrospect = "/token/introspect";
+        private String users = "/users";
+        private String channels = "/channels";
+        private String chat = "/chat";
+        private String moderation = "/moderation/bans";
+        private String livestreams = "/livestreams";
+        private String publicKey = "/public-key";
+        private String events = "/events/subscriptions";
+
+        public Builder clientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        public Builder clientSecret(String clientSecret) {
+            this.clientSecret = clientSecret;
+            return this;
+        }
+
+        public Builder redirectUri(String redirectUri) {
+            this.redirectUri = redirectUri;
+            return this;
+        }
+
+        public Builder oAuthHost(String oAuthHost) {
+            this.oAuthHost = oAuthHost;
+            return this;
+        }
+
+        public Builder authorizationEndpoint(String authorizationEndpoint) {
+            this.authorizationEndpoint = authorizationEndpoint;
+            return this;
+        }
+
+        public Builder tokenEndpoint(String tokenEndpoint) {
+            this.tokenEndpoint = tokenEndpoint;
+            return this;
+        }
+
+        public Builder baseUrl(String baseUrl) {
+            this.baseUrl = baseUrl;
+            return this;
+        }
+
+        public Builder categories(String categories) {
+            this.categories = categories;
+            return this;
+        }
+
+        public Builder categoriesId(String categoriesId) {
+            this.categoriesId = categoriesId;
+            return this;
+        }
+
+        public Builder tokenIntrospect(String tokenIntrospect) {
+            this.tokenIntrospect = tokenIntrospect;
+            return this;
+        }
+
+        public Builder users(String users) {
+            this.users = users;
+            return this;
+        }
+
+        public Builder channels(String channels) {
+            this.channels = channels;
+            return this;
+        }
+
+        public Builder chat(String chat) {
+            this.chat = chat;
+            return this;
+        }
+
+        public Builder moderation(String moderation) {
+            this.moderation = moderation;
+            return this;
+        }
+
+        public Builder livestreams(String livestreams) {
+            this.livestreams = livestreams;
+            return this;
+        }
+
+        public Builder publicKey(String publicKey) {
+            this.publicKey = publicKey;
+            return this;
+        }
+
+        public Builder events(String events) {
+            this.events = events;
+            return this;
+        }
+
+        public KickConfiguration build() {
+            if (clientId == null) {
+                throw new IllegalStateException("ClientId is required");
+            }
+
+            if (clientSecret == null) {
+                throw new IllegalStateException("ClientSecret is required");
+            }
+
+            if (redirectUri == null) {
+                throw new IllegalStateException("RedirectUri is required");
+            }
+
+            return new KickConfiguration(this);
+        }
     }
 }
