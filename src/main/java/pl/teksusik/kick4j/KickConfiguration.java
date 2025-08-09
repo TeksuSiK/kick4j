@@ -31,6 +31,9 @@ public class KickConfiguration {
     // Channels
     private String channels = "/channels";
 
+    // Chat
+    private String chat = "/chat";
+
     public String getOAuthHost() {
         return oAuthHost;
     }
@@ -101,5 +104,13 @@ public class KickConfiguration {
 
     public void setChannels(String channels) {
         this.channels = channels;
+    }
+
+    public String getChat() {
+        return chat;
+    }
+
+    public void setChat(String chat) {
+        this.chat = chat;
     }
 }
