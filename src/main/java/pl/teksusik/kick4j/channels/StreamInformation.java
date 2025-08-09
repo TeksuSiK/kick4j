@@ -21,7 +21,7 @@ public class StreamInformation {
                              @JsonProperty("start_time") String startTime,
                              @JsonProperty("thumbnail") String thumbnail,
                              @JsonProperty("url") String url,
-                             @JsonProperty("viewer_count")  Integer viewerCount) {
+                             @JsonProperty("viewer_count") Integer viewerCount) {
         this.isLive = isLive;
         this.isMature = isMature;
         this.key = key;

@@ -62,6 +62,23 @@ public abstract class ApiClient {
             return this;
         }
 
+        public RequestBuilder queryParams(Object queryParams) {
+            if (queryParams == null) {
+                return this;
+            }
+
+            Map<String, Object> map = mapper.convertValue(queryParams, new TypeReference<>() {});
+            map.entrySet().removeIf(e -> e.getValue() == null);
+
+            if (this.queryParams == null) {
+                this.queryParams = map;
+            } else {
+                this.queryParams.putAll(map);
+            }
+
+            return this;
+        }
+
         public RequestBuilder pathParams(Map<String, Object> params) {
             for (Map.Entry<String, Object> entry : params.entrySet()) {
                 String placeholder = "\\{" + entry.getKey() + "\\}";

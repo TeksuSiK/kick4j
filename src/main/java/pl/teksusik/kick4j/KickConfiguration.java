@@ -37,6 +37,9 @@ public class KickConfiguration {
     // Moderation
     private String moderation = "/moderation/bans";
 
+    // Livestreams
+    private String livestreams = "/livestreams";
+
     public String getOAuthHost() {
         return oAuthHost;
     }
@@ -123,5 +126,13 @@ public class KickConfiguration {
 
     public void setModeration(String moderation) {
         this.moderation = moderation;
+    }
+
+    public String getLivestreams() {
+        return livestreams;
+    }
+
+    public void setLivestreams(String livestreams) {
+        this.livestreams = livestreams;
     }
 }

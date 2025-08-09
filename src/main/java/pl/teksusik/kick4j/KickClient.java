@@ -9,6 +9,7 @@ import pl.teksusik.kick4j.authorization.AuthorizationClient;
 import pl.teksusik.kick4j.categories.CategoriesClient;
 import pl.teksusik.kick4j.channels.ChannelsClient;
 import pl.teksusik.kick4j.chat.ChatClient;
+import pl.teksusik.kick4j.livestreams.LivestreamsClient;
 import pl.teksusik.kick4j.moderation.ModerationClient;
 import pl.teksusik.kick4j.users.UsersClient;
 
@@ -21,6 +22,7 @@ public class KickClient {
     private final ChannelsClient channelsClient;
     private final ChatClient chatClient;
     private final ModerationClient moderationClient;
+    private final LivestreamsClient livestreamsClient;
 
     public KickClient(String clientId, String clientSecret, String redirectUri) {
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -36,6 +38,7 @@ public class KickClient {
         this.channelsClient = new ChannelsClient(httpClient, objectMapper, this.authorizationClient);
         this.chatClient = new ChatClient(httpClient, objectMapper, this.authorizationClient);
         this.moderationClient = new ModerationClient(httpClient, objectMapper, this.authorizationClient);
+        this.livestreamsClient = new LivestreamsClient(httpClient, objectMapper, this.authorizationClient);
     }
 
     public AuthorizationClient authorization() {
@@ -60,5 +63,9 @@ public class KickClient {
 
     public ModerationClient moderation() {
         return moderationClient;
+    }
+
+    public LivestreamsClient livestreams() {
+        return livestreamsClient;
     }
 }
