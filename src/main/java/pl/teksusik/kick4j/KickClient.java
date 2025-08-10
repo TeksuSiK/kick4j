@@ -40,7 +40,7 @@ public class KickClient {
 
     private HttpServer httpServer;
 
-    public KickClient(KickConfiguration configuration, RefreshTokenStore tokenStore) {
+    public KickClient(KickConfiguration configuration) {
         HttpClient httpClient = HttpClient.newHttpClient();
 
         SimpleModule serializerModule = new SimpleModule()
@@ -50,7 +50,7 @@ public class KickClient {
                 .registerModule(new JavaTimeModule())
                 .registerModule(serializerModule);
 
-        this.authorizationClient = new AuthorizationClient(httpClient, objectMapper, configuration, tokenStore);
+        this.authorizationClient = new AuthorizationClient(httpClient, objectMapper, configuration, configuration.getTokenStore());
         this.categoriesClient = new CategoriesClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.usersClient = new UsersClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.channelsClient = new ChannelsClient(httpClient, objectMapper, configuration, this.authorizationClient);

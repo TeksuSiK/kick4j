@@ -1,9 +1,14 @@
 package pl.teksusik.kick4j;
 
+import pl.teksusik.kick4j.authorization.RefreshTokenStore;
+
 public final class KickConfiguration {
+    private final RefreshTokenStore tokenStore;
+
     private final String clientId;
     private final String clientSecret;
     private final String redirectUri;
+
     private final String oAuthHost;
     private final String authorizationEndpoint;
     private final String tokenEndpoint;
@@ -20,6 +25,7 @@ public final class KickConfiguration {
     private final String events;
 
     private KickConfiguration(Builder builder) {
+        this.tokenStore = builder.tokenStore;
         this.clientId = builder.clientId;
         this.clientSecret = builder.clientSecret;
         this.redirectUri = builder.redirectUri;
@@ -41,6 +47,10 @@ public final class KickConfiguration {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public RefreshTokenStore getTokenStore() {
+        return tokenStore;
     }
 
     public String getClientId() {
@@ -112,6 +122,7 @@ public final class KickConfiguration {
     }
 
     public static final class Builder {
+        private RefreshTokenStore tokenStore;
         private String clientId;
         private String clientSecret;
         private String redirectUri;
@@ -129,6 +140,11 @@ public final class KickConfiguration {
         private String livestreams = "/livestreams";
         private String publicKey = "/public-key";
         private String events = "/events/subscriptions";
+
+        public Builder tokenStore(RefreshTokenStore tokenStore) {
+            this.tokenStore = tokenStore;
+            return this;
+        }
 
         public Builder clientId(String clientId) {
             this.clientId = clientId;
@@ -216,6 +232,10 @@ public final class KickConfiguration {
         }
 
         public KickConfiguration build() {
+            if (tokenStore == null) {
+                throw new IllegalStateException("TokenStore is required");
+            }
+
             if (clientId == null) {
                 throw new IllegalStateException("ClientId is required");
             }
