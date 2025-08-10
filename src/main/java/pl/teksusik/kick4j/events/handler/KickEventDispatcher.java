@@ -5,12 +5,14 @@ import pl.teksusik.kick4j.events.type.KickEvent;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class KickEventDispatcher {
     private final Map<String, Class<? extends KickEvent>> eventTypeToClass = new HashMap<>();
-    private final Map<Class<? extends KickEvent>, KickEventListener<?>> handlers = new HashMap<>();
+    private final Map<Class<? extends KickEvent>, List<KickEventListener<?>>> handlers = new HashMap<>();
 
     private final ObjectMapper mapper;
 
@@ -27,7 +29,8 @@ public class KickEventDispatcher {
             this.eventTypeToClass.put(key, eventClass);
         }
 
-        this.handlers.put(eventClass, listener);
+        this.handlers.computeIfAbsent(eventClass, k -> new ArrayList<>())
+                .add(listener);
     }
 
     @SuppressWarnings("unchecked")
@@ -38,19 +41,20 @@ public class KickEventDispatcher {
         }
 
         KickEvent event = this.deserialize(payload, clazz);
-        KickEventListener<KickEvent> handler = (KickEventListener<KickEvent>) this.handlers.get(clazz);
-        if (handler == null) {
+        List<KickEventListener<?>> handlers = this.handlers.get(clazz);
+        if (handlers == null || handlers.isEmpty()) {
             return;
         }
 
-        handler.handle(event);
+        for (KickEventListener<?> listener : handlers) {
+            ((KickEventListener<KickEvent>) listener).handle(event);
+        }
     }
 
     private KickEvent deserialize(String payload, Class<? extends KickEvent> clazz) {
         try {
             return this.mapper.readValue(payload, clazz);
         } catch (IOException exception) {
-            exception.printStackTrace();
             throw new RuntimeException("Failed to deserialize Kick event", exception);
         }
     }
