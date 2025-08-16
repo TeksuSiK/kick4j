@@ -4,6 +4,12 @@ plugins {
     id("maven-publish")
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
 group = "pl.teksusik"
 version = "1.0-SNAPSHOT"
 
