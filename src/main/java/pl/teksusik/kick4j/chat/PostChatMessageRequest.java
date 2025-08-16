@@ -14,7 +14,7 @@ public class PostChatMessageRequest {
 
     @JsonCreator
     public PostChatMessageRequest(@JsonProperty("broadcast_user_id") Integer broadcastUserId,
-                                  @JsonProperty("conent") String content,
+                                  @JsonProperty("content") String content,
                                   @JsonProperty("reply_to_message_id") String replyToMessageId,
                                   @JsonProperty("type") Type type) {
         this.broadcastUserId = broadcastUserId;
