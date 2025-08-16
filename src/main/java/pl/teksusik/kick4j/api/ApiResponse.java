@@ -2,7 +2,9 @@ package pl.teksusik.kick4j.api;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
+@Getter
 public class ApiResponse<T> {
     private final T data;
     private final String message;
@@ -11,14 +13,6 @@ public class ApiResponse<T> {
     public ApiResponse(@JsonProperty("data") T data, @JsonProperty("message") String message) {
         this.data = data;
         this.message = message;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
     public boolean isSuccess() {

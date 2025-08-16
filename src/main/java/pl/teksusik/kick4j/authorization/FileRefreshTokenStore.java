@@ -1,15 +1,14 @@
 package pl.teksusik.kick4j.authorization;
 
+import lombok.AllArgsConstructor;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+@AllArgsConstructor
 public class FileRefreshTokenStore implements RefreshTokenStore {
     private final Path path;
-
-    public FileRefreshTokenStore(Path path) {
-        this.path = path;
-    }
 
     @Override
     public String getRefreshToken() {

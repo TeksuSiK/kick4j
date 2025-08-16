@@ -2,8 +2,10 @@ package pl.teksusik.kick4j.channels;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import pl.teksusik.kick4j.categories.Category;
 
+@Getter
 public class Channel {
     private final String bannerPicture;
     private final Integer broadcasterUserId;
@@ -28,33 +30,5 @@ public class Channel {
         this.slug = slug;
         this.stream = stream;
         this.streamTitle = streamTitle;
-    }
-
-    public String getBannerPicture() {
-        return bannerPicture;
-    }
-
-    public Integer getBroadcasterUserId() {
-        return broadcasterUserId;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public String getChannelDescription() {
-        return channelDescription;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public StreamInformation getStream() {
-        return stream;
-    }
-
-    public String getStreamTitle() {
-        return streamTitle;
     }
 }

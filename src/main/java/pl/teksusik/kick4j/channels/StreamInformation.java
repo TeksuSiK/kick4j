@@ -2,7 +2,9 @@ package pl.teksusik.kick4j.channels;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
+@Getter
 public class StreamInformation {
     private final Boolean isLive;
     private final Boolean isMature;
@@ -30,37 +32,5 @@ public class StreamInformation {
         this.thumbnail = thumbnail;
         this.url = url;
         this.viewerCount = viewerCount;
-    }
-
-    public Boolean isLive() {
-        return isLive;
-    }
-
-    public Boolean isMature() {
-        return isMature;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public Integer getViewerCount() {
-        return viewerCount;
     }
 }

@@ -2,10 +2,12 @@ package pl.teksusik.kick4j.events.type;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.time.Instant;
 import java.util.List;
 
+@Getter
 public class ChannelSubscriptionGiftsEvent extends KickEvent {
     private final EventUser broadcaster;
     private final EventUser subscriber;
@@ -24,26 +26,6 @@ public class ChannelSubscriptionGiftsEvent extends KickEvent {
         this.giftees = giftees;
         this.createdAt = createdAt;
         this.expiresAt = expiresAt;
-    }
-
-    public EventUser getBroadcaster() {
-        return broadcaster;
-    }
-
-    public EventUser getSubscriber() {
-        return subscriber;
-    }
-
-    public List<EventUser> getGiftees() {
-        return giftees;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public Instant getExpiresAt() {
-        return expiresAt;
     }
 
     public static String getEventType() {

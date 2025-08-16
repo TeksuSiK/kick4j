@@ -2,7 +2,9 @@ package pl.teksusik.kick4j.events.type;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
+@Getter
 public class Badge {
     private final String text;
     private final String type;
@@ -15,17 +17,5 @@ public class Badge {
         this.text = text;
         this.type = type;
         this.count = count;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public Integer getCount() {
-        return count;
     }
 }

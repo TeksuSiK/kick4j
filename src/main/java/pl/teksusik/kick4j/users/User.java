@@ -2,7 +2,9 @@ package pl.teksusik.kick4j.users;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
+@Getter
 public class User {
     private final String email;
     private final String name;
@@ -18,21 +20,5 @@ public class User {
         this.name = name;
         this.profilePicture = profilePicture;
         this.userId = userId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getProfilePicture() {
-        return profilePicture;
-    }
-
-    public Integer getUserId() {
-        return userId;
     }
 }

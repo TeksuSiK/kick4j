@@ -2,9 +2,11 @@ package pl.teksusik.kick4j.events.type;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.time.Instant;
 
+@Getter
 public class LivestreamStatusUpdatedEvent extends KickEvent {
     private final EventUser broadcaster;
     private final Boolean isLive;
@@ -23,26 +25,6 @@ public class LivestreamStatusUpdatedEvent extends KickEvent {
         this.title = title;
         this.startedAt = startedAt;
         this.endedAt = endedAt;
-    }
-
-    public EventUser getBroadcaster() {
-        return broadcaster;
-    }
-
-    public Boolean getLive() {
-        return isLive;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Instant getStartedAt() {
-        return startedAt;
-    }
-
-    public Instant getEndedAt() {
-        return endedAt;
     }
 
     public static String getEventType() {

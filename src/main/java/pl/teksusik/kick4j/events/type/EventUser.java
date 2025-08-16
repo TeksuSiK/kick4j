@@ -2,7 +2,9 @@ package pl.teksusik.kick4j.events.type;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
+@Getter
 public class EventUser {
     private final Boolean isAnonymous;
     private final Integer userId;
@@ -27,33 +29,5 @@ public class EventUser {
         this.profilePicture = profilePicture;
         this.channelSlug = channelSlug;
         this.identity = identity;
-    }
-
-    public Boolean getAnonymous() {
-        return isAnonymous;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public Boolean getVerified() {
-        return isVerified;
-    }
-
-    public String getProfilePicture() {
-        return profilePicture;
-    }
-
-    public String getChannelSlug() {
-        return channelSlug;
-    }
-
-    public Identity getIdentity() {
-        return identity;
     }
 }

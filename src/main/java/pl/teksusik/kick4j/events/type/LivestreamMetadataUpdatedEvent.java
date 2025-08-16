@@ -2,9 +2,11 @@ package pl.teksusik.kick4j.events.type;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.time.Instant;
 
+@Getter
 public class LivestreamMetadataUpdatedEvent extends KickEvent {
     private final EventUser broadcaster;
     private final LivestreamMetadata metadata;
@@ -14,14 +16,6 @@ public class LivestreamMetadataUpdatedEvent extends KickEvent {
                                           @JsonProperty("metadata") LivestreamMetadata metadata) {
         this.broadcaster = broadcaster;
         this.metadata = metadata;
-    }
-
-    public EventUser getBroadcaster() {
-        return broadcaster;
-    }
-
-    public LivestreamMetadata getMetadata() {
-        return metadata;
     }
 
     public static String getEventType() {

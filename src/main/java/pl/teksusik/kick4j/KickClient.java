@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sun.net.httpserver.HttpServer;
+import lombok.Getter;
 import pl.teksusik.kick4j.api.ApiResponse;
 import pl.teksusik.kick4j.api.ApiResponseDeserializer;
 import pl.teksusik.kick4j.authorization.AuthorizationClient;

@@ -9,14 +9,13 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
+import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 
+@NoArgsConstructor
 public class ApiResponseDeserializer<T> extends JsonDeserializer<ApiResponse<T>> implements ContextualDeserializer {
     private JavaType valueType;
-
-    public ApiResponseDeserializer() {
-    }
 
     public ApiResponseDeserializer(JavaType valueType) {
         this.valueType = valueType;

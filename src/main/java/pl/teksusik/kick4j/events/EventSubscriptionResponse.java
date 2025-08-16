@@ -2,7 +2,9 @@ package pl.teksusik.kick4j.events;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
+@Getter
 public class EventSubscriptionResponse {
     private final String error;
     private final String name;
@@ -18,21 +20,5 @@ public class EventSubscriptionResponse {
         this.name = name;
         this.subscriptionId = subscriptionId;
         this.version = version;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSubscriptionId() {
-        return subscriptionId;
-    }
-
-    public Integer getVersion() {
-        return version;
     }
 }

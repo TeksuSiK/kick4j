@@ -3,7 +3,11 @@ package pl.teksusik.kick4j.moderation;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.Getter;
 
+@Getter
+@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PostModerationBansRequest {
     private final Integer broadcasterUserId;
@@ -20,64 +24,5 @@ public class PostModerationBansRequest {
         this.duration = duration;
         this.reason = reason;
         this.userId = userId;
-    }
-
-    public Integer getBroadcasterUserId() {
-        return broadcasterUserId;
-    }
-
-    public Integer getDuration() {
-        return duration;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-        private Integer broadcasterUserId;
-        private Integer duration;
-        private String reason;
-        private Integer userId;
-
-        public Builder broadcasterUserId(Integer broadcasterUserId) {
-            this.broadcasterUserId = broadcasterUserId;
-            return this;
-        }
-
-        public Builder duration(Integer duration) {
-            this.duration = duration;
-            return this;
-        }
-
-        public Builder reason(String reason) {
-            this.reason = reason;
-            return this;
-        }
-
-        public Builder userId(Integer userId) {
-            this.userId = userId;
-            return this;
-        }
-
-        public PostModerationBansRequest build() {
-            if (broadcasterUserId == null) {
-                throw new IllegalStateException("BroadcasterUserId is required");
-            }
-
-            if (userId == null) {
-                throw new IllegalStateException("UserId is required");
-            }
-
-            return new PostModerationBansRequest(broadcasterUserId, duration, reason, userId);
-        }
     }
 }

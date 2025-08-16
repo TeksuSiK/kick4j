@@ -2,7 +2,9 @@ package pl.teksusik.kick4j.authorization;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
+@Getter
 public class OAuthTokenResponse {
     private final String accessToken;
     private final String tokenType;
@@ -21,25 +23,5 @@ public class OAuthTokenResponse {
         this.refreshToken = refreshToken;
         this.expiresIn = expiresIn;
         this.scope = scope;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public String getTokenType() {
-        return tokenType;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public Integer getExpiresIn() {
-        return expiresIn;
-    }
-
-    public String getScope() {
-        return scope;
     }
 }

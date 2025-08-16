@@ -2,7 +2,9 @@ package pl.teksusik.kick4j.categories;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
+@Getter
 public class Category {
     private final Integer id;
     private final String name;
@@ -13,17 +15,5 @@ public class Category {
         this.id = id;
         this.name = name;
         this.thumbnail = thumbnail;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
     }
 }

@@ -2,9 +2,13 @@ package pl.teksusik.kick4j.livestreams;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
+@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetLivestreamsRequest {
     private final List<Integer> broadcasterUserId;
@@ -19,72 +23,6 @@ public class GetLivestreamsRequest {
         this.language = language;
         this.limit = limit;
         this.sort = sort;
-    }
-
-    public List<Integer> getBroadcasterUserId() {
-        return broadcasterUserId;
-    }
-
-    public Integer getCategory() {
-        return category;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public Integer getLimit() {
-        return limit;
-    }
-
-    public Sort getSort() {
-        return sort;
-    }
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-        private List<Integer> broadcasterUserId;
-        private Integer category;
-        private String language;
-        private Integer limit;
-        private Sort sort;
-
-        public Builder broadcasterUserId(List<Integer> broadcasterUserId) {
-            this.broadcasterUserId = broadcasterUserId;
-            return this;
-        }
-
-        public Builder broadcasterUserId(Integer broadcasterUserId) {
-            this.broadcasterUserId = List.of(broadcasterUserId);
-            return this;
-        }
-
-        public Builder category(Integer category) {
-            this.category = category;
-            return this;
-        }
-
-        public Builder language(String language) {
-            this.language = language;
-            return this;
-        }
-
-        public Builder limit(Integer limit) {
-            this.limit = limit;
-            return this;
-        }
-
-        public Builder sort(Sort sort) {
-            this.sort = sort;
-            return this;
-        }
-
-        public GetLivestreamsRequest build() {
-            return new GetLivestreamsRequest(broadcasterUserId, category, language, limit, sort);
-        }
     }
 
     public enum Sort {

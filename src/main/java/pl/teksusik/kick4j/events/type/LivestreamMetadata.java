@@ -1,8 +1,10 @@
 package pl.teksusik.kick4j.events.type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import pl.teksusik.kick4j.categories.Category;
 
+@Getter
 public class LivestreamMetadata {
     private final String title;
     private final String language;
@@ -17,21 +19,5 @@ public class LivestreamMetadata {
         this.language = language;
         this.hasMatureContent = hasMatureContent;
         this.category = category;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public Boolean getHasMatureContent() {
-        return hasMatureContent;
-    }
-
-    public Category getCategory() {
-        return category;
     }
 }

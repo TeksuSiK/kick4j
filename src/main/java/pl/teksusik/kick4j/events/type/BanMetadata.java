@@ -2,9 +2,11 @@ package pl.teksusik.kick4j.events.type;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.time.Instant;
 
+@Getter
 public class BanMetadata {
     private final String reason;
     private final Instant createdAt;
@@ -17,17 +19,5 @@ public class BanMetadata {
         this.reason = reason;
         this.createdAt = createdAt;
         this.expiresAt = expiresAt;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public Instant getExpiresAt() {
-        return expiresAt;
     }
 }

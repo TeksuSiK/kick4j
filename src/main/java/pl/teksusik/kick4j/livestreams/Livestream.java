@@ -2,8 +2,10 @@ package pl.teksusik.kick4j.livestreams;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 import pl.teksusik.kick4j.categories.Category;
 
+@Getter
 public class Livestream {
     private final Integer broadcasterUserId;
     private final Category category;
@@ -37,45 +39,5 @@ public class Livestream {
         this.streamTitle = streamTitle;
         this.thumbnail = thumbnail;
         this.viewerCount = viewerCount;
-    }
-
-    public Integer getBroadcasterUserId() {
-        return broadcasterUserId;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public Integer getChannelId() {
-        return channelId;
-    }
-
-    public Boolean getHasMatureContent() {
-        return hasMatureContent;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public String getStartedAt() {
-        return startedAt;
-    }
-
-    public String getStreamTitle() {
-        return streamTitle;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public Integer getViewerCount() {
-        return viewerCount;
     }
 }

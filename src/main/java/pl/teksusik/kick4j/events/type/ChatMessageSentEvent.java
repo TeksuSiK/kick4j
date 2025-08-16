@@ -2,10 +2,12 @@ package pl.teksusik.kick4j.events.type;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.time.Instant;
 import java.util.List;
 
+@Getter
 public class ChatMessageSentEvent extends KickEvent {
     private final String messageId;
     private final EventUser broadcaster;
@@ -27,30 +29,6 @@ public class ChatMessageSentEvent extends KickEvent {
         this.content = content;
         this.emotes = emotes;
         this.createdAt = createdAt;
-    }
-
-    public String getMessageId() {
-        return messageId;
-    }
-
-    public EventUser getBroadcaster() {
-        return broadcaster;
-    }
-
-    public EventUser getSender() {
-        return sender;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public List<Emote> getEmotes() {
-        return emotes;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
     }
 
     public static String getEventType() {

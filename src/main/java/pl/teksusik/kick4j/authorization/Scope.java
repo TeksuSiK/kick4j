@@ -1,5 +1,8 @@
 package pl.teksusik.kick4j.authorization;
 
+import lombok.Getter;
+
+@Getter
 public enum Scope {
     USER_READ("user:read"),
     CHANNEL_READ("channel:read"),
@@ -13,9 +16,5 @@ public enum Scope {
 
     Scope(String scope) {
         this.scope = scope;
-    }
-
-    public String getScope() {
-        return scope;
     }
 }
