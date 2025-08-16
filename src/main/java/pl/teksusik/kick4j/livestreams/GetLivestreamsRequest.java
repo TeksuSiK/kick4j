@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Singular;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetLivestreamsRequest {
+    @Singular("broadcasterUserId")
     private final List<Integer> broadcasterUserId;
     private final Integer category;
     private final String language;
