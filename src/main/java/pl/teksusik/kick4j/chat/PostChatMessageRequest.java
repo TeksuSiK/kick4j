@@ -1,30 +1,24 @@
 package pl.teksusik.kick4j.chat;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PostChatMessageRequest {
-    private final Integer broadcastUserId;
+    private final Integer broadcasterUserId;
     private final String content;
     private final String replyToMessageId;
     private final Type type;
 
-    @JsonCreator
-    public PostChatMessageRequest(@JsonProperty("broadcast_user_id") Integer broadcastUserId,
-                                  @JsonProperty("conent") String content,
-                                  @JsonProperty("reply_to_message_id") String replyToMessageId,
-                                  @JsonProperty("type") Type type) {
-        this.broadcastUserId = broadcastUserId;
+    public PostChatMessageRequest(Integer broadcasterUserId, String content, String replyToMessageId, Type type) {
+        this.broadcasterUserId = broadcasterUserId;
         this.content = content;
         this.replyToMessageId = replyToMessageId;
         this.type = type;
     }
 
-    public Integer getBroadcastUserId() {
-        return broadcastUserId;
+    public Integer getBroadcasterUserId() {
+        return broadcasterUserId;
     }
 
     public String getContent() {
@@ -44,13 +38,13 @@ public class PostChatMessageRequest {
     }
 
     public static class Builder {
-        private Integer broadcastUserId;
+        private Integer broadcasterUserId;
         private String content;
         private String replyToMessageId;
         private Type type;
 
         public Builder broadcastUserId(Integer broadcastUserId) {
-            this.broadcastUserId = broadcastUserId;
+            this.broadcasterUserId = broadcastUserId;
             return this;
         }
 
@@ -78,11 +72,11 @@ public class PostChatMessageRequest {
                 throw new IllegalStateException("Type is required");
             }
 
-            if (type == Type.USER && broadcastUserId == null) {
+            if (type == Type.USER && broadcasterUserId == null) {
                 throw new IllegalStateException("BroadcastUserId is required when sending as user");
             }
 
-            return new PostChatMessageRequest(broadcastUserId, content, replyToMessageId, type);
+            return new PostChatMessageRequest(broadcasterUserId, content, replyToMessageId, type);
         }
     }
 
