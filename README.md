@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'pl.teksusik:kick4j:1.0-SNAPSHOT'
+    implementation 'pl.teksusik:kick4j:1.0.0-SNAPSHOT'
 }
 ```
 
@@ -54,7 +54,7 @@ Add the repository to your `pom.xml`:
     <dependency>
         <groupId>pl.teksusik</groupId>
         <artifactId>kick4j</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```
