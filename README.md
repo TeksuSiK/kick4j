@@ -290,7 +290,7 @@ try {
 
 ## Requirements
 
-- Java 11 or higher
+- Java 21 or higher
 - Valid Kick.com application credentials
 
 ## Dependencies
