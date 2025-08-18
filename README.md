@@ -29,12 +29,12 @@ repositories {
     mavenCentral()
     maven {
         name = "teksusik"
-        url = "https://repo.teksusik.pl/snapshots"
+        url = "https://repo.teksusik.pl/releases"
     }
 }
 
 dependencies {
-    implementation 'pl.teksusik:kick4j:1.0.0-SNAPSHOT'
+    implementation 'pl.teksusik:kick4j:1.0.0'
 }
 ```
 
@@ -46,7 +46,7 @@ Add the repository to your `pom.xml`:
 <repositories>
     <repository>
         <id>teksusik-snapshots</id>
-        <url>https://repo.teksusik.pl/snapshots</url>
+        <url>https://repo.teksusik.pl/releases</url>
     </repository>
 </repositories>
 
@@ -54,7 +54,7 @@ Add the repository to your `pom.xml`:
     <dependency>
         <groupId>pl.teksusik</groupId>
         <artifactId>kick4j</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </dependency>
 </dependencies>
 ```
