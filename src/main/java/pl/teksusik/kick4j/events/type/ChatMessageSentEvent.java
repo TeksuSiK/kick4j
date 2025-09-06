@@ -8,6 +8,7 @@ import java.util.List;
 
 public class ChatMessageSentEvent extends KickEvent {
     private final String messageId;
+    private final ReplyInfo repliesTo;
     private final EventUser broadcaster;
     private final EventUser sender;
     private final String content;
@@ -16,12 +17,14 @@ public class ChatMessageSentEvent extends KickEvent {
 
     @JsonCreator
     public ChatMessageSentEvent(@JsonProperty("message_id") String messageId,
+                                @JsonProperty("replies_to") ReplyInfo repliesTo,
                                 @JsonProperty("broadcaster") EventUser broadcaster,
                                 @JsonProperty("sender") EventUser sender,
                                 @JsonProperty("content") String content,
                                 @JsonProperty("emotes") List<Emote> emotes,
                                 @JsonProperty("created_at") Instant createdAt) {
         this.messageId = messageId;
+        this.repliesTo = repliesTo;
         this.broadcaster = broadcaster;
         this.sender = sender;
         this.content = content;
@@ -31,6 +34,10 @@ public class ChatMessageSentEvent extends KickEvent {
 
     public String getMessageId() {
         return messageId;
+    }
+
+    public ReplyInfo getRepliesTo() {
+        return repliesTo;
     }
 
     public EventUser getBroadcaster() {

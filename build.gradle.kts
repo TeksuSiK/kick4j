@@ -11,7 +11,7 @@ java {
 }
 
 group = "pl.teksusik"
-version = "1.0.1-SNAPSHOT"
+version = "1.1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
