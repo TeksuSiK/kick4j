@@ -27,4 +27,9 @@ public class LivestreamsClient extends ApiClient {
                 .queryParams(request)
                 .send(new TypeReference<>() {});
     }
+
+    public LivestreamsStats getLivestreamsStats() {
+        return this.get(this.configuration.getLivestreamsStats())
+                .send(new TypeReference<>() {});
+    }
 }
