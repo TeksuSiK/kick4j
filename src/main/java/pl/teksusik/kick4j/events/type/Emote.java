@@ -16,6 +16,14 @@ public class Emote {
         this.positions = positions;
     }
 
+    public String getEmoteId() {
+        return emoteId;
+    }
+
+    public List<Position> getPositions() {
+        return positions;
+    }
+
     public static class Position {
         private final String start;
         private final String end;

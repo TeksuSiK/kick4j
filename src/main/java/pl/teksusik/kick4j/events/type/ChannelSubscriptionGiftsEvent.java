@@ -8,19 +8,19 @@ import java.util.List;
 
 public class ChannelSubscriptionGiftsEvent extends KickEvent {
     private final EventUser broadcaster;
-    private final EventUser subscriber;
+    private final EventUser gifter;
     private final List<EventUser> giftees;
     private final Instant createdAt;
     private final Instant expiresAt;
 
     @JsonCreator
     public ChannelSubscriptionGiftsEvent(@JsonProperty("broadcaster") EventUser broadcaster,
-                                         @JsonProperty("subscriber") EventUser subscriber,
+                                         @JsonProperty("subscriber") EventUser gifter,
                                          @JsonProperty("giftees") List<EventUser> giftees,
                                          @JsonProperty("created_at") Instant createdAt,
                                          @JsonProperty("expires_at") Instant expiresAt) {
         this.broadcaster = broadcaster;
-        this.subscriber = subscriber;
+        this.gifter = gifter;
         this.giftees = giftees;
         this.createdAt = createdAt;
         this.expiresAt = expiresAt;
@@ -30,8 +30,8 @@ public class ChannelSubscriptionGiftsEvent extends KickEvent {
         return broadcaster;
     }
 
-    public EventUser getSubscriber() {
-        return subscriber;
+    public EventUser getGifter() {
+        return gifter;
     }
 
     public List<EventUser> getGiftees() {

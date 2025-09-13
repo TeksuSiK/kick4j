@@ -25,6 +25,26 @@ public class ChannelSubscriptionCreatedEvent extends KickEvent {
         this.expiresAt = expiresAt;
     }
 
+    public EventUser getBroadcaster() {
+        return broadcaster;
+    }
+
+    public EventUser getSubscriber() {
+        return subscriber;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public Instant getExpiresAt() {
+        return expiresAt;
+    }
+
     public static String getEventType() {
         return "channel.subscription.new";
     }

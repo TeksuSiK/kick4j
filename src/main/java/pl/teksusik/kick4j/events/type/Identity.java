@@ -15,4 +15,12 @@ public class Identity {
         this.usernameColor = usernameColor;
         this.badges = badges;
     }
+
+    public String getUsernameColor() {
+        return usernameColor;
+    }
+
+    public List<Badge> getBadges() {
+        return badges;
+    }
 }

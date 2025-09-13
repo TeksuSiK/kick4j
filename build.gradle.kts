@@ -10,6 +10,8 @@ java {
     }
 }
 
+val mockitoAgent = configurations.create("mockitoAgent")
+
 group = "pl.teksusik"
 version = "1.1.0-SNAPSHOT"
 
@@ -23,9 +25,13 @@ dependencies {
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.mockito:mockito-core:5.19.0")
+
+    mockitoAgent("org.mockito:mockito-core:5.19.0") { isTransitive = false }
 }
 
 tasks.test {
+    jvmArgs = listOf("-javaagent:${mockitoAgent.asPath}")
     useJUnitPlatform()
 }
 
