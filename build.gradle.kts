@@ -20,6 +20,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.jspecify:jspecify:1.0.0")
+
     implementation("com.fasterxml.jackson.core:jackson-databind:2.19.2")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.2")
 
