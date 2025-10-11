@@ -2,7 +2,10 @@ package pl.teksusik.kick4j.events;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
+@NullMarked
 public class EventSubscriptionResponse {
     private final String error;
     private final String name;
@@ -20,6 +23,7 @@ public class EventSubscriptionResponse {
         this.version = version;
     }
 
+    @Nullable
     public String getError() {
         return error;
     }
@@ -28,6 +32,7 @@ public class EventSubscriptionResponse {
         return name;
     }
 
+    @Nullable
     public String getSubscriptionId() {
         return subscriptionId;
     }
