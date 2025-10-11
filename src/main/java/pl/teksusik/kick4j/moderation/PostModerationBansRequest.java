@@ -3,18 +3,23 @@ package pl.teksusik.kick4j.moderation;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
+@NullMarked
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PostModerationBansRequest {
     private final Integer broadcasterUserId;
+    @Nullable
     private final Integer duration;
+    @Nullable
     private final String reason;
     private final Integer userId;
 
     @JsonCreator
     public PostModerationBansRequest(@JsonProperty("broadcaster_user_id") Integer broadcasterUserId,
-                                     @JsonProperty("duration") Integer duration,
-                                     @JsonProperty("reason") String reason,
+                                     @Nullable @JsonProperty("duration") Integer duration,
+                                     @Nullable @JsonProperty("reason") String reason,
                                      @JsonProperty("user_id") Integer userId) {
         this.broadcasterUserId = broadcasterUserId;
         this.duration = duration;
@@ -26,10 +31,12 @@ public class PostModerationBansRequest {
         return broadcasterUserId;
     }
 
+    @Nullable
     public Integer getDuration() {
         return duration;
     }
 
+    @Nullable
     public String getReason() {
         return reason;
     }
@@ -42,10 +49,15 @@ public class PostModerationBansRequest {
         return new Builder();
     }
 
+    @NullMarked
     public static class Builder {
+        @Nullable
         private Integer broadcasterUserId;
+        @Nullable
         private Integer duration;
+        @Nullable
         private String reason;
+        @Nullable
         private Integer userId;
 
         public Builder broadcasterUserId(Integer broadcasterUserId) {
@@ -69,11 +81,11 @@ public class PostModerationBansRequest {
         }
 
         public PostModerationBansRequest build() {
-            if (broadcasterUserId == null) {
+            if (this.broadcasterUserId == null) {
                 throw new IllegalStateException("BroadcasterUserId is required");
             }
 
-            if (userId == null) {
+            if (this.userId == null) {
                 throw new IllegalStateException("UserId is required");
             }
 
