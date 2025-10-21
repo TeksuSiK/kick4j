@@ -180,6 +180,7 @@ client.events().postEventsSubscription(subscription);
 - `channel.subscription.new` - New subscriptions
 - `channel.subscription.renewal` - Subscription renewals
 - `channel.subscription.gifts` - Gift subscriptions
+- `kicks.gifted` - Kicks Gifted 
 - `livestream.status.updated` - Stream start/stop
 - `livestream.metadata.updated` - Stream title/category changes
 - `moderation.banned` - User bans/timeouts
