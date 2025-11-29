@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class EventSubscription {
-    private final String aapId;
+    private final String appId;
     private final Integer broadcasterUserId;
     private final String createdAt;
     private final String event;
@@ -14,7 +14,7 @@ public class EventSubscription {
     private final Integer version;
 
     @JsonCreator
-    public EventSubscription(@JsonProperty("app_id") String aapId,
+    public EventSubscription(@JsonProperty("app_id") String appId,
                              @JsonProperty("broadcaster_user_id") Integer broadcasterUserId,
                              @JsonProperty("created_at") String createdAt,
                              @JsonProperty("event") String event,
@@ -22,7 +22,7 @@ public class EventSubscription {
                              @JsonProperty("method") String method,
                              @JsonProperty("updated_at") String updatedAt,
                              @JsonProperty("version") Integer version) {
-        this.aapId = aapId;
+        this.appId = appId;
         this.broadcasterUserId = broadcasterUserId;
         this.createdAt = createdAt;
         this.event = event;
@@ -32,8 +32,8 @@ public class EventSubscription {
         this.version = version;
     }
 
-    public String getAapId() {
-        return aapId;
+    public String getAppId() {
+        return appId;
     }
 
     public Integer getBroadcasterUserId() {
