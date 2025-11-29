@@ -4,42 +4,50 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Gift {
-    private final int amount;
+    private final Integer amount;
     private final String name;
     private final String type;
     private final String tier;
     private final String message;
+    private final Integer pinnedTimeSeconds;
 
     @JsonCreator
-    public Gift(@JsonProperty("amount") int amount,
+    public Gift(@JsonProperty("amount") Integer amount,
                 @JsonProperty("name") String name,
                 @JsonProperty("type") String type,
                 @JsonProperty("tier") String tier,
-                @JsonProperty("message") String message) {
+                @JsonProperty("message") String message,
+                @JsonProperty("pinned_time_seconds") Integer pinnedTimeSeconds
+    ) {
         this.amount = amount;
         this.name = name;
         this.type = type;
         this.tier = tier;
         this.message = message;
+        this.pinnedTimeSeconds = pinnedTimeSeconds;
     }
 
-    public int getAmount() {
-        return amount;
+    public Integer getAmount() {
+        return this.amount;
     }
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public String getTier() {
-        return tier;
+        return this.tier;
     }
 
     public String getMessage() {
-        return message;
+        return this.message;
+    }
+
+    public Integer getPinnedTimeSeconds() {
+        return this.pinnedTimeSeconds;
     }
 }
