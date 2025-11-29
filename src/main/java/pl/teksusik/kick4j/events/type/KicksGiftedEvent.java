@@ -22,19 +22,19 @@ public class KicksGiftedEvent extends KickEvent {
     }
 
     public EventUser getBroadcaster() {
-        return broadcaster;
+        return this.broadcaster;
     }
 
     public EventUser getSender() {
-        return sender;
+        return this.sender;
     }
 
     public Gift getGift() {
-        return gift;
+        return this.gift;
     }
 
     public Instant getCreatedAt() {
-        return createdAt;
+        return this.createdAt;
     }
 
     public static String getEventType() {
