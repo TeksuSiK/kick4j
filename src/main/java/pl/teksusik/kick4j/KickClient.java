@@ -1,7 +1,12 @@
 package pl.teksusik.kick4j;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sun.net.httpserver.HttpServer;
@@ -48,7 +53,21 @@ public class KickClient {
         ObjectMapper objectMapper = new ObjectMapper()
                 .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
                 .registerModule(new JavaTimeModule())
-                .registerModule(serializerModule);
+                .registerModule(serializerModule)
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .addHandler(new DeserializationProblemHandler() {
+                    @Override
+                    public boolean handleUnknownProperty(DeserializationContext ctxt, JsonParser p,
+                                                         JsonDeserializer<?> deserializer, Object bean,
+                                                         String propertyName) throws IOException {
+                        String className = (bean instanceof Class)
+                                ? ((Class<?>) bean).getName()
+                                : bean.getClass().getName();
+                        System.out.println("WARNING: Ignored property: " + propertyName + " in " + className);
+                        p.skipChildren();
+                        return true;
+                    }
+                });
 
         this.authorizationClient = new AuthorizationClient(httpClient, objectMapper, configuration, configuration.getTokenStore());
         this.categoriesClient = new CategoriesClient(httpClient, objectMapper, configuration, this.authorizationClient);
