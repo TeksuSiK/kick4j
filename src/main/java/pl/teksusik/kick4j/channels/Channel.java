@@ -5,8 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import pl.teksusik.kick4j.categories.Category;
 
 public class Channel {
+    private final Integer activeSubscribersCount;
     private final String bannerPicture;
     private final Integer broadcasterUserId;
+    private final Integer canceledSubscribersCount;
     private final Category category;
     private final String channelDescription;
     private final String slug;
@@ -14,20 +16,28 @@ public class Channel {
     private final String streamTitle;
 
     @JsonCreator
-    public Channel(@JsonProperty("banner_picture") String bannerPicture,
+    public Channel(@JsonProperty("active_subscribers_count") Integer activeSubscribersCount,
+                   @JsonProperty("banner_picture") String bannerPicture,
                    @JsonProperty("broadcaster_user_id") Integer broadcasterUserId,
+                   @JsonProperty("canceled_subscribers_count") Integer canceledSubscribersCount,
                    @JsonProperty("category") Category category,
                    @JsonProperty("channel_description") String channelDescription,
                    @JsonProperty("slug") String slug,
                    @JsonProperty("stream") StreamInformation stream,
                    @JsonProperty("stream_title") String streamTitle) {
+        this.activeSubscribersCount = activeSubscribersCount;
         this.bannerPicture = bannerPicture;
         this.broadcasterUserId = broadcasterUserId;
+        this.canceledSubscribersCount = canceledSubscribersCount;
         this.category = category;
         this.channelDescription = channelDescription;
         this.slug = slug;
         this.stream = stream;
         this.streamTitle = streamTitle;
+    }
+
+    public Integer getActiveSubscribersCount() {
+        return activeSubscribersCount;
     }
 
     public String getBannerPicture() {
@@ -36,6 +46,10 @@ public class Channel {
 
     public Integer getBroadcasterUserId() {
         return broadcasterUserId;
+    }
+
+    public Integer getCanceledSubscribersCount() {
+        return canceledSubscribersCount;
     }
 
     public Category getCategory() {
