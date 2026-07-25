@@ -59,6 +59,7 @@ public abstract class ApiClient {
             this.method = method;
             this.path = path;
             this.baseUrl = configuration.getBaseUrl();
+            this.appAuth = configuration.isDefaultAppAuth();
         }
 
         /**
@@ -75,6 +76,15 @@ public abstract class ApiClient {
          */
         public RequestBuilder appAuth() {
             this.appAuth = true;
+            return this;
+        }
+
+        /**
+         * Authenticates this request with the user access token, overriding a configured
+         * {@link KickConfiguration#isDefaultAppAuth() app-auth default} for this call.
+         */
+        public RequestBuilder userAuth() {
+            this.appAuth = false;
             return this;
         }
 

@@ -16,6 +16,7 @@ public final class KickConfiguration {
     private final String introspectEndpoint;
     private final String baseUrl;
     private final String baseUrlV2;
+    private final boolean defaultAppAuth;
     private final String categories;
     private final String categoriesId;
     private final String tokenIntrospect;
@@ -49,6 +50,7 @@ public final class KickConfiguration {
         this.introspectEndpoint = builder.introspectEndpoint;
         this.baseUrl = builder.baseUrl;
         this.baseUrlV2 = builder.baseUrlV2;
+        this.defaultAppAuth = builder.defaultAppAuth;
         this.categories = builder.categories;
         this.categoriesId = builder.categoriesId;
         this.tokenIntrospect = builder.tokenIntrospect;
@@ -117,6 +119,14 @@ public final class KickConfiguration {
 
     public String getBaseUrlV2() {
         return baseUrlV2;
+    }
+
+    /**
+     * Whether requests use an app access token (Client Credentials flow) by default,
+     * instead of the user access token. Individual requests can still override this.
+     */
+    public boolean isDefaultAppAuth() {
+        return defaultAppAuth;
     }
 
     public String getCategories() {
@@ -211,6 +221,7 @@ public final class KickConfiguration {
         private String introspectEndpoint = "/oauth/token/introspect";
         private String baseUrl = "https://api.kick.com/public/v1";
         private String baseUrlV2 = "https://api.kick.com/public/v2";
+        private boolean defaultAppAuth = false;
         private String categories = "/categories";
         private String categoriesId = "/categories/{id}";
         private String tokenIntrospect = "/token/introspect";
@@ -284,6 +295,16 @@ public final class KickConfiguration {
 
         public Builder baseUrlV2(String baseUrlV2) {
             this.baseUrlV2 = baseUrlV2;
+            return this;
+        }
+
+        /**
+         * Makes every request default to an app access token (Client Credentials flow)
+         * instead of the user access token. Ideal for server-to-server / app-only usage.
+         * Individual requests may still override this per call.
+         */
+        public Builder defaultAppAuth(boolean defaultAppAuth) {
+            this.defaultAppAuth = defaultAppAuth;
             return this;
         }
 
