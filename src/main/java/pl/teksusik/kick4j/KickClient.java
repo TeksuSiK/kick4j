@@ -24,6 +24,7 @@ import pl.teksusik.kick4j.events.handler.KickSignatureVerifier;
 import pl.teksusik.kick4j.livestreams.LivestreamsClient;
 import pl.teksusik.kick4j.moderation.ModerationClient;
 import pl.teksusik.kick4j.publicKey.PublicKeyClient;
+import pl.teksusik.kick4j.rewards.ChannelRewardsClient;
 import pl.teksusik.kick4j.users.UsersClient;
 
 import java.io.IOException;
@@ -35,6 +36,7 @@ public class KickClient {
     private final CategoriesClient categoriesClient;
     private final UsersClient usersClient;
     private final ChannelsClient channelsClient;
+    private final ChannelRewardsClient channelRewardsClient;
     private final ChatClient chatClient;
     private final ModerationClient moderationClient;
     private final LivestreamsClient livestreamsClient;
@@ -73,6 +75,7 @@ public class KickClient {
         this.categoriesClient = new CategoriesClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.usersClient = new UsersClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.channelsClient = new ChannelsClient(httpClient, objectMapper, configuration, this.authorizationClient);
+        this.channelRewardsClient = new ChannelRewardsClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.chatClient = new ChatClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.moderationClient = new ModerationClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.livestreamsClient = new LivestreamsClient(httpClient, objectMapper, configuration, this.authorizationClient);
@@ -116,6 +119,10 @@ public class KickClient {
 
     public ChannelsClient channels() {
         return channelsClient;
+    }
+
+    public ChannelRewardsClient channelRewards() {
+        return channelRewardsClient;
     }
 
     public ChatClient chat() {

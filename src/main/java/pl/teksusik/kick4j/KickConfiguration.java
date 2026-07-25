@@ -24,6 +24,11 @@ public final class KickConfiguration {
     private final String livestreamsStats;
     private final String publicKey;
     private final String events;
+    private final String channelsRewards;
+    private final String channelsRewardsId;
+    private final String channelsRewardsRedemptions;
+    private final String channelsRewardsRedemptionsAccept;
+    private final String channelsRewardsRedemptionsReject;
 
     private KickConfiguration(Builder builder) {
         this.tokenStore = builder.tokenStore;
@@ -45,6 +50,11 @@ public final class KickConfiguration {
         this.livestreamsStats = builder.livestreamsStats;
         this.publicKey = builder.publicKey;
         this.events = builder.events;
+        this.channelsRewards = builder.channelsRewards;
+        this.channelsRewardsId = builder.channelsRewardsId;
+        this.channelsRewardsRedemptions = builder.channelsRewardsRedemptions;
+        this.channelsRewardsRedemptionsAccept = builder.channelsRewardsRedemptionsAccept;
+        this.channelsRewardsRedemptionsReject = builder.channelsRewardsRedemptionsReject;
     }
 
     public static Builder builder() {
@@ -127,6 +137,26 @@ public final class KickConfiguration {
         return events;
     }
 
+    public String getChannelsRewards() {
+        return channelsRewards;
+    }
+
+    public String getChannelsRewardsId() {
+        return channelsRewardsId;
+    }
+
+    public String getChannelsRewardsRedemptions() {
+        return channelsRewardsRedemptions;
+    }
+
+    public String getChannelsRewardsRedemptionsAccept() {
+        return channelsRewardsRedemptionsAccept;
+    }
+
+    public String getChannelsRewardsRedemptionsReject() {
+        return channelsRewardsRedemptionsReject;
+    }
+
     public static final class Builder {
         private RefreshTokenStore tokenStore;
         private String clientId;
@@ -147,6 +177,11 @@ public final class KickConfiguration {
         private String livestreamsStats = "/livestreams/stats";
         private String publicKey = "/public-key";
         private String events = "/events/subscriptions";
+        private String channelsRewards = "/channels/rewards";
+        private String channelsRewardsId = "/channels/rewards/{id}";
+        private String channelsRewardsRedemptions = "/channels/rewards/redemptions";
+        private String channelsRewardsRedemptionsAccept = "/channels/rewards/redemptions/accept";
+        private String channelsRewardsRedemptionsReject = "/channels/rewards/redemptions/reject";
 
         public Builder tokenStore(RefreshTokenStore tokenStore) {
             this.tokenStore = tokenStore;
@@ -240,6 +275,31 @@ public final class KickConfiguration {
 
         public Builder events(String events) {
             this.events = events;
+            return this;
+        }
+
+        public Builder channelsRewards(String channelsRewards) {
+            this.channelsRewards = channelsRewards;
+            return this;
+        }
+
+        public Builder channelsRewardsId(String channelsRewardsId) {
+            this.channelsRewardsId = channelsRewardsId;
+            return this;
+        }
+
+        public Builder channelsRewardsRedemptions(String channelsRewardsRedemptions) {
+            this.channelsRewardsRedemptions = channelsRewardsRedemptions;
+            return this;
+        }
+
+        public Builder channelsRewardsRedemptionsAccept(String channelsRewardsRedemptionsAccept) {
+            this.channelsRewardsRedemptionsAccept = channelsRewardsRedemptionsAccept;
+            return this;
+        }
+
+        public Builder channelsRewardsRedemptionsReject(String channelsRewardsRedemptionsReject) {
+            this.channelsRewardsRedemptionsReject = channelsRewardsRedemptionsReject;
             return this;
         }
 
