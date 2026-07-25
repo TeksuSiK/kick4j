@@ -15,6 +15,12 @@ public class UsersClient extends ApiClient {
         super(httpClient, mapper, configuration, authorization);
     }
 
+    /**
+     * @deprecated The {@code /public/v1/token/introspect} endpoint is deprecated by Kick.
+     * Use {@link pl.teksusik.kick4j.authorization.AuthorizationClient#introspectToken()},
+     * which targets the new {@code /oauth/token/introspect} endpoint.
+     */
+    @Deprecated
     public TokenIntrospect tokenIntrospect() {
         return this.post(this.configuration.getTokenIntrospect())
                 .send(new TypeReference<>() {});

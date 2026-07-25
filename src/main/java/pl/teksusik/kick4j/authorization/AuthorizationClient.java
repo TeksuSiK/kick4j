@@ -1,7 +1,9 @@
 package pl.teksusik.kick4j.authorization;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.teksusik.kick4j.KickConfiguration;
+import pl.teksusik.kick4j.users.TokenIntrospect;
 
 import java.io.IOException;
 import java.net.URI;
@@ -142,6 +144,87 @@ public class AuthorizationClient {
         OAuthTokenResponse newToken = this.postOAuthTokenRequest(body);
         this.refreshToken.notifyRefreshTokenRoll(newToken.getRefreshToken());
         return newToken;
+    }
+
+    /**
+     * Revokes access for the given token.
+     *
+     * @param token the access or refresh token to revoke
+     */
+    public void revokeToken(String token) {
+        this.revokeToken(token, null);
+    }
+
+    /**
+     * Revokes access for the given token.
+     *
+     * @param token the access or refresh token to revoke
+     * @param hint  optional hint about the token type to speed up the lookup
+     */
+    public void revokeToken(String token, TokenTypeHint hint) {
+        StringJoiner query = new StringJoiner("&");
+        query.add("token=" + encodeUrl(token));
+        if (hint != null) {
+            query.add("token_hint_type=" + encodeUrl(hint.getValue()));
+        }
+
+        String url = this.configuration.getOAuthHost() + this.configuration.getRevokeEndpoint() + "?" + query;
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .POST(HttpRequest.BodyPublishers.noBody())
+                    .build();
+
+            HttpResponse<String> response = this.httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                throw new OAuthTokenException(response.statusCode(), response.body());
+            }
+        } catch (IOException | InterruptedException exception) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Failed to revoke token", exception);
+        }
+    }
+
+    /**
+     * Introspects the current managed access token via the OAuth introspection endpoint.
+     */
+    public TokenIntrospect introspectToken() {
+        return this.introspectToken(this.getAccessToken());
+    }
+
+    /**
+     * Introspects the given access token via the OAuth introspection endpoint
+     * ({@code POST /oauth/token/introspect} on the OAuth host).
+     *
+     * @param accessToken the access token to introspect
+     */
+    public TokenIntrospect introspectToken(String accessToken) {
+        String url = this.configuration.getOAuthHost() + this.configuration.getIntrospectEndpoint();
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Authorization", "Bearer " + accessToken)
+                    .header("Accept", "application/json")
+                    .POST(HttpRequest.BodyPublishers.noBody())
+                    .build();
+
+            HttpResponse<String> response = this.httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                throw new OAuthTokenException(response.statusCode(), response.body());
+            }
+
+            JsonNode root = this.mapper.readTree(response.body());
+            JsonNode data = root.get("data");
+            if (data == null || data.isNull()) {
+                return null;
+            }
+
+            return this.mapper.treeToValue(data, TokenIntrospect.class);
+        } catch (IOException | InterruptedException exception) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Failed to introspect token", exception);
+        }
     }
 
     /**

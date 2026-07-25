@@ -12,6 +12,8 @@ public final class KickConfiguration {
     private final String oAuthHost;
     private final String authorizationEndpoint;
     private final String tokenEndpoint;
+    private final String revokeEndpoint;
+    private final String introspectEndpoint;
     private final String baseUrl;
     private final String baseUrlV2;
     private final String categories;
@@ -42,6 +44,8 @@ public final class KickConfiguration {
         this.oAuthHost = builder.oAuthHost;
         this.authorizationEndpoint = builder.authorizationEndpoint;
         this.tokenEndpoint = builder.tokenEndpoint;
+        this.revokeEndpoint = builder.revokeEndpoint;
+        this.introspectEndpoint = builder.introspectEndpoint;
         this.baseUrl = builder.baseUrl;
         this.baseUrlV2 = builder.baseUrlV2;
         this.categories = builder.categories;
@@ -95,6 +99,14 @@ public final class KickConfiguration {
 
     public String getTokenEndpoint() {
         return tokenEndpoint;
+    }
+
+    public String getRevokeEndpoint() {
+        return revokeEndpoint;
+    }
+
+    public String getIntrospectEndpoint() {
+        return introspectEndpoint;
     }
 
     public String getBaseUrl() {
@@ -189,6 +201,8 @@ public final class KickConfiguration {
         private String oAuthHost = "https://id.kick.com";
         private String authorizationEndpoint = "/oauth/authorize";
         private String tokenEndpoint = "/oauth/token";
+        private String revokeEndpoint = "/oauth/revoke";
+        private String introspectEndpoint = "/oauth/token/introspect";
         private String baseUrl = "https://api.kick.com/public/v1";
         private String baseUrlV2 = "https://api.kick.com/public/v2";
         private String categories = "/categories";
@@ -243,6 +257,16 @@ public final class KickConfiguration {
 
         public Builder tokenEndpoint(String tokenEndpoint) {
             this.tokenEndpoint = tokenEndpoint;
+            return this;
+        }
+
+        public Builder revokeEndpoint(String revokeEndpoint) {
+            this.revokeEndpoint = revokeEndpoint;
+            return this;
+        }
+
+        public Builder introspectEndpoint(String introspectEndpoint) {
+            this.introspectEndpoint = introspectEndpoint;
             return this;
         }
 
