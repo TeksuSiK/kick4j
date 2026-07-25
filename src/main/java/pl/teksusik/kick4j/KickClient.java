@@ -21,6 +21,7 @@ import pl.teksusik.kick4j.events.EventsClient;
 import pl.teksusik.kick4j.events.handler.BuiltInKickWebhookHandler;
 import pl.teksusik.kick4j.events.handler.KickEventDispatcher;
 import pl.teksusik.kick4j.events.handler.KickSignatureVerifier;
+import pl.teksusik.kick4j.kicks.KicksClient;
 import pl.teksusik.kick4j.livestreams.LivestreamsClient;
 import pl.teksusik.kick4j.moderation.ModerationClient;
 import pl.teksusik.kick4j.publicKey.PublicKeyClient;
@@ -40,6 +41,7 @@ public class KickClient {
     private final ChatClient chatClient;
     private final ModerationClient moderationClient;
     private final LivestreamsClient livestreamsClient;
+    private final KicksClient kicksClient;
     private final PublicKeyClient publicKeyClient;
     private final EventsClient eventsClient;
     private final KickSignatureVerifier signatureVerifier;
@@ -79,6 +81,7 @@ public class KickClient {
         this.chatClient = new ChatClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.moderationClient = new ModerationClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.livestreamsClient = new LivestreamsClient(httpClient, objectMapper, configuration, this.authorizationClient);
+        this.kicksClient = new KicksClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.publicKeyClient = new PublicKeyClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.eventsClient = new EventsClient(httpClient, objectMapper, configuration, this.authorizationClient);
 
@@ -135,6 +138,10 @@ public class KickClient {
 
     public LivestreamsClient livestreams() {
         return livestreamsClient;
+    }
+
+    public KicksClient kicks() {
+        return kicksClient;
     }
 
     public PublicKeyClient publicKey() {

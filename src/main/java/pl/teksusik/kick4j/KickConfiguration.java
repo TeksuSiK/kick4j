@@ -29,6 +29,7 @@ public final class KickConfiguration {
     private final String channelsRewardsRedemptions;
     private final String channelsRewardsRedemptionsAccept;
     private final String channelsRewardsRedemptionsReject;
+    private final String kicksLeaderboard;
 
     private KickConfiguration(Builder builder) {
         this.tokenStore = builder.tokenStore;
@@ -55,6 +56,7 @@ public final class KickConfiguration {
         this.channelsRewardsRedemptions = builder.channelsRewardsRedemptions;
         this.channelsRewardsRedemptionsAccept = builder.channelsRewardsRedemptionsAccept;
         this.channelsRewardsRedemptionsReject = builder.channelsRewardsRedemptionsReject;
+        this.kicksLeaderboard = builder.kicksLeaderboard;
     }
 
     public static Builder builder() {
@@ -157,6 +159,10 @@ public final class KickConfiguration {
         return channelsRewardsRedemptionsReject;
     }
 
+    public String getKicksLeaderboard() {
+        return kicksLeaderboard;
+    }
+
     public static final class Builder {
         private RefreshTokenStore tokenStore;
         private String clientId;
@@ -182,6 +188,7 @@ public final class KickConfiguration {
         private String channelsRewardsRedemptions = "/channels/rewards/redemptions";
         private String channelsRewardsRedemptionsAccept = "/channels/rewards/redemptions/accept";
         private String channelsRewardsRedemptionsReject = "/channels/rewards/redemptions/reject";
+        private String kicksLeaderboard = "/kicks/leaderboard";
 
         public Builder tokenStore(RefreshTokenStore tokenStore) {
             this.tokenStore = tokenStore;
@@ -300,6 +307,11 @@ public final class KickConfiguration {
 
         public Builder channelsRewardsRedemptionsReject(String channelsRewardsRedemptionsReject) {
             this.channelsRewardsRedemptionsReject = channelsRewardsRedemptionsReject;
+            return this;
+        }
+
+        public Builder kicksLeaderboard(String kicksLeaderboard) {
+            this.kicksLeaderboard = kicksLeaderboard;
             return this;
         }
 
