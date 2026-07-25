@@ -15,7 +15,7 @@ java {
 val mockitoAgent = configurations.create("mockitoAgent")
 
 group = "pl.teksusik"
-version = "1.2.0"
+version = "1.3.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
