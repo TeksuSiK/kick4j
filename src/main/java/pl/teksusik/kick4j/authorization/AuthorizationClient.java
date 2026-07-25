@@ -38,6 +38,9 @@ public class AuthorizationClient {
     private String accessToken;
     private Instant expiresAt;
 
+    private String appAccessToken;
+    private Instant appExpiresAt;
+
     /**
      * Creates a new AuthorizationClient.
      *
@@ -89,6 +92,7 @@ public class AuthorizationClient {
      * @return the full URL string for the authorization request
      */
     public String getAuthorizationUrl(List<Scope> scopeList, String codeChallenge) {
+        this.requireRedirectUri();
         StringJoiner joiner = new StringJoiner("&",
                 this.configuration.getOAuthHost() + this.configuration.getAuthorizationEndpoint() + "?",
                 "");
@@ -116,6 +120,7 @@ public class AuthorizationClient {
      * @return an OAuthTokenResponse containing access and refresh tokens
      */
     public OAuthTokenResponse exchangeCodeForToken(String code, String codeVerifier) {
+        this.requireRedirectUri();
         Map<String, String> body = Map.of(
                 "code", code,
                 "client_id", this.configuration.getClientId(),
@@ -134,6 +139,7 @@ public class AuthorizationClient {
      * @return a new OAuthTokenResponse containing refreshed access and refresh tokens
      */
     public OAuthTokenResponse refreshAccessToken() {
+        this.requireTokenStore();
         Map<String, String> body = Map.of(
                 "refresh_token", this.refreshToken.getRefreshToken(),
                 "client_id", this.configuration.getClientId(),
@@ -144,6 +150,41 @@ public class AuthorizationClient {
         OAuthTokenResponse newToken = this.postOAuthTokenRequest(body);
         this.refreshToken.notifyRefreshTokenRoll(newToken.getRefreshToken());
         return newToken;
+    }
+
+    /**
+     * Requests a fresh app access token using the OAuth 2.1 Client Credentials flow
+     * ({@code grant_type=client_credentials}). App tokens are server-to-server tokens for
+     * accessing publicly available data and do not require a user login. They carry no
+     * refresh token; a new one is requested on demand once the current token expires.
+     *
+     * @return the new app access token response
+     */
+    public OAuthTokenResponse requestAppAccessToken() {
+        Map<String, String> body = Map.of(
+                "grant_type", "client_credentials",
+                "client_id", this.configuration.getClientId(),
+                "client_secret", this.configuration.getClientSecret()
+        );
+
+        OAuthTokenResponse response = this.postOAuthTokenRequest(body);
+        this.appAccessToken = response.getAccessToken();
+        this.appExpiresAt = Instant.now().plusSeconds(response.getExpiresIn());
+        return response;
+    }
+
+    /**
+     * Returns a valid app access token, requesting a new one via the Client Credentials
+     * flow if the current one is missing or about to expire.
+     *
+     * @return a valid app access token string
+     */
+    public String getAppAccessToken() {
+        if (this.appAccessToken == null || Instant.now().isAfter(this.appExpiresAt.minusSeconds(10))) {
+            this.requestAppAccessToken();
+        }
+
+        return this.appAccessToken;
     }
 
     /**
@@ -247,9 +288,22 @@ public class AuthorizationClient {
      * @param oAuthToken the OAuthTokenResponse containing the new tokens and expiry
      */
     public void setTokens(OAuthTokenResponse oAuthToken) {
+        this.requireTokenStore();
         this.accessToken = oAuthToken.getAccessToken();
         this.refreshToken.notifyRefreshTokenRoll(oAuthToken.getRefreshToken());
         this.expiresAt = Instant.now().plusSeconds(oAuthToken.getExpiresIn());
+    }
+
+    private void requireRedirectUri() {
+        if (this.configuration.getRedirectUri() == null) {
+            throw new IllegalStateException("RedirectUri is required for the user authorization flow");
+        }
+    }
+
+    private void requireTokenStore() {
+        if (this.refreshToken == null) {
+            throw new IllegalStateException("TokenStore is required for the user authorization flow");
+        }
     }
 
     /**

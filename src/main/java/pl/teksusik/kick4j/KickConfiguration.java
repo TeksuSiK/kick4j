@@ -1,5 +1,6 @@
 package pl.teksusik.kick4j;
 
+import pl.teksusik.kick4j.authorization.AuthMode;
 import pl.teksusik.kick4j.authorization.RefreshTokenStore;
 
 public final class KickConfiguration {
@@ -16,6 +17,7 @@ public final class KickConfiguration {
     private final String introspectEndpoint;
     private final String baseUrl;
     private final String baseUrlV2;
+    private final AuthMode authMode;
     private final String categories;
     private final String categoriesId;
     private final String tokenIntrospect;
@@ -49,6 +51,7 @@ public final class KickConfiguration {
         this.introspectEndpoint = builder.introspectEndpoint;
         this.baseUrl = builder.baseUrl;
         this.baseUrlV2 = builder.baseUrlV2;
+        this.authMode = builder.authMode;
         this.categories = builder.categories;
         this.categoriesId = builder.categoriesId;
         this.tokenIntrospect = builder.tokenIntrospect;
@@ -117,6 +120,14 @@ public final class KickConfiguration {
 
     public String getBaseUrlV2() {
         return baseUrlV2;
+    }
+
+    /**
+     * The default token type used to authenticate requests. Individual requests can still
+     * override this.
+     */
+    public AuthMode getAuthMode() {
+        return authMode;
     }
 
     public String getCategories() {
@@ -211,6 +222,7 @@ public final class KickConfiguration {
         private String introspectEndpoint = "/oauth/token/introspect";
         private String baseUrl = "https://api.kick.com/public/v1";
         private String baseUrlV2 = "https://api.kick.com/public/v2";
+        private AuthMode authMode;
         private String categories = "/categories";
         private String categoriesId = "/categories/{id}";
         private String tokenIntrospect = "/token/introspect";
@@ -284,6 +296,17 @@ public final class KickConfiguration {
 
         public Builder baseUrlV2(String baseUrlV2) {
             this.baseUrlV2 = baseUrlV2;
+            return this;
+        }
+
+        /**
+         * The default token type used to authenticate requests (required).
+         * Use {@link AuthMode#APP} for server-to-server / app-only usage or
+         * {@link AuthMode#USER} for acting on behalf of a logged-in user.
+         * Individual requests may still override this per call.
+         */
+        public Builder authMode(AuthMode authMode) {
+            this.authMode = authMode;
             return this;
         }
 
@@ -388,10 +411,9 @@ public final class KickConfiguration {
         }
 
         public KickConfiguration build() {
-            if (tokenStore == null) {
-                throw new IllegalStateException("TokenStore is required");
-            }
-
+            // clientId and clientSecret are needed for every flow (including app auth).
+            // redirectUri and tokenStore are only used by the user authorization flow and
+            // are validated lazily where they are used, so an app-only setup can omit them.
             if (clientId == null) {
                 throw new IllegalStateException("ClientId is required");
             }
@@ -400,8 +422,8 @@ public final class KickConfiguration {
                 throw new IllegalStateException("ClientSecret is required");
             }
 
-            if (redirectUri == null) {
-                throw new IllegalStateException("RedirectUri is required");
+            if (authMode == null) {
+                throw new IllegalStateException("AuthMode is required (AuthMode.APP or AuthMode.USER)");
             }
 
             return new KickConfiguration(this);
