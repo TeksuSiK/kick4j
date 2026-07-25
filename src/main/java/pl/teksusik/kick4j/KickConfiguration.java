@@ -409,20 +409,15 @@ public final class KickConfiguration {
         }
 
         public KickConfiguration build() {
-            if (tokenStore == null) {
-                throw new IllegalStateException("TokenStore is required");
-            }
-
+            // clientId and clientSecret are needed for every flow (including app auth).
+            // redirectUri and tokenStore are only used by the user authorization flow and
+            // are validated lazily where they are used, so an app-only setup can omit them.
             if (clientId == null) {
                 throw new IllegalStateException("ClientId is required");
             }
 
             if (clientSecret == null) {
                 throw new IllegalStateException("ClientSecret is required");
-            }
-
-            if (redirectUri == null) {
-                throw new IllegalStateException("RedirectUri is required");
             }
 
             return new KickConfiguration(this);

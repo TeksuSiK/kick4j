@@ -92,6 +92,7 @@ public class AuthorizationClient {
      * @return the full URL string for the authorization request
      */
     public String getAuthorizationUrl(List<Scope> scopeList, String codeChallenge) {
+        this.requireRedirectUri();
         StringJoiner joiner = new StringJoiner("&",
                 this.configuration.getOAuthHost() + this.configuration.getAuthorizationEndpoint() + "?",
                 "");
@@ -119,6 +120,7 @@ public class AuthorizationClient {
      * @return an OAuthTokenResponse containing access and refresh tokens
      */
     public OAuthTokenResponse exchangeCodeForToken(String code, String codeVerifier) {
+        this.requireRedirectUri();
         Map<String, String> body = Map.of(
                 "code", code,
                 "client_id", this.configuration.getClientId(),
@@ -137,6 +139,7 @@ public class AuthorizationClient {
      * @return a new OAuthTokenResponse containing refreshed access and refresh tokens
      */
     public OAuthTokenResponse refreshAccessToken() {
+        this.requireTokenStore();
         Map<String, String> body = Map.of(
                 "refresh_token", this.refreshToken.getRefreshToken(),
                 "client_id", this.configuration.getClientId(),
@@ -285,9 +288,22 @@ public class AuthorizationClient {
      * @param oAuthToken the OAuthTokenResponse containing the new tokens and expiry
      */
     public void setTokens(OAuthTokenResponse oAuthToken) {
+        this.requireTokenStore();
         this.accessToken = oAuthToken.getAccessToken();
         this.refreshToken.notifyRefreshTokenRoll(oAuthToken.getRefreshToken());
         this.expiresAt = Instant.now().plusSeconds(oAuthToken.getExpiresIn());
+    }
+
+    private void requireRedirectUri() {
+        if (this.configuration.getRedirectUri() == null) {
+            throw new IllegalStateException("RedirectUri is required for the user authorization flow");
+        }
+    }
+
+    private void requireTokenStore() {
+        if (this.refreshToken == null) {
+            throw new IllegalStateException("TokenStore is required for the user authorization flow");
+        }
     }
 
     /**
