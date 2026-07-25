@@ -1,5 +1,6 @@
 package pl.teksusik.kick4j;
 
+import pl.teksusik.kick4j.authorization.AuthMode;
 import pl.teksusik.kick4j.authorization.RefreshTokenStore;
 
 public final class KickConfiguration {
@@ -16,7 +17,7 @@ public final class KickConfiguration {
     private final String introspectEndpoint;
     private final String baseUrl;
     private final String baseUrlV2;
-    private final boolean defaultAppAuth;
+    private final AuthMode authMode;
     private final String categories;
     private final String categoriesId;
     private final String tokenIntrospect;
@@ -50,7 +51,7 @@ public final class KickConfiguration {
         this.introspectEndpoint = builder.introspectEndpoint;
         this.baseUrl = builder.baseUrl;
         this.baseUrlV2 = builder.baseUrlV2;
-        this.defaultAppAuth = builder.defaultAppAuth;
+        this.authMode = builder.authMode;
         this.categories = builder.categories;
         this.categoriesId = builder.categoriesId;
         this.tokenIntrospect = builder.tokenIntrospect;
@@ -122,11 +123,11 @@ public final class KickConfiguration {
     }
 
     /**
-     * Whether requests use an app access token (Client Credentials flow) by default,
-     * instead of the user access token. Individual requests can still override this.
+     * The default token type used to authenticate requests. Individual requests can still
+     * override this.
      */
-    public boolean isDefaultAppAuth() {
-        return defaultAppAuth;
+    public AuthMode getAuthMode() {
+        return authMode;
     }
 
     public String getCategories() {
@@ -221,7 +222,7 @@ public final class KickConfiguration {
         private String introspectEndpoint = "/oauth/token/introspect";
         private String baseUrl = "https://api.kick.com/public/v1";
         private String baseUrlV2 = "https://api.kick.com/public/v2";
-        private boolean defaultAppAuth = false;
+        private AuthMode authMode;
         private String categories = "/categories";
         private String categoriesId = "/categories/{id}";
         private String tokenIntrospect = "/token/introspect";
@@ -299,12 +300,13 @@ public final class KickConfiguration {
         }
 
         /**
-         * Makes every request default to an app access token (Client Credentials flow)
-         * instead of the user access token. Ideal for server-to-server / app-only usage.
+         * The default token type used to authenticate requests (required).
+         * Use {@link AuthMode#APP} for server-to-server / app-only usage or
+         * {@link AuthMode#USER} for acting on behalf of a logged-in user.
          * Individual requests may still override this per call.
          */
-        public Builder defaultAppAuth(boolean defaultAppAuth) {
-            this.defaultAppAuth = defaultAppAuth;
+        public Builder authMode(AuthMode authMode) {
+            this.authMode = authMode;
             return this;
         }
 
@@ -418,6 +420,10 @@ public final class KickConfiguration {
 
             if (clientSecret == null) {
                 throw new IllegalStateException("ClientSecret is required");
+            }
+
+            if (authMode == null) {
+                throw new IllegalStateException("AuthMode is required (AuthMode.APP or AuthMode.USER)");
             }
 
             return new KickConfiguration(this);

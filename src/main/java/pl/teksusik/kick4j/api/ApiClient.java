@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.teksusik.kick4j.KickConfiguration;
+import pl.teksusik.kick4j.authorization.AuthMode;
 import pl.teksusik.kick4j.authorization.AuthorizationClient;
 
 import java.io.IOException;
@@ -59,7 +60,7 @@ public abstract class ApiClient {
             this.method = method;
             this.path = path;
             this.baseUrl = configuration.getBaseUrl();
-            this.appAuth = configuration.isDefaultAppAuth();
+            this.appAuth = configuration.getAuthMode() == AuthMode.APP;
         }
 
         /**
@@ -80,8 +81,8 @@ public abstract class ApiClient {
         }
 
         /**
-         * Authenticates this request with the user access token, overriding a configured
-         * {@link KickConfiguration#isDefaultAppAuth() app-auth default} for this call.
+         * Authenticates this request with the user access token, overriding the configured
+         * {@link KickConfiguration#getAuthMode() default auth mode} for this call.
          */
         public RequestBuilder userAuth() {
             this.appAuth = false;
