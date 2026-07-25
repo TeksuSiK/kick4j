@@ -17,6 +17,7 @@ import pl.teksusik.kick4j.authorization.RefreshTokenStore;
 import pl.teksusik.kick4j.categories.CategoriesClient;
 import pl.teksusik.kick4j.channels.ChannelsClient;
 import pl.teksusik.kick4j.chat.ChatClient;
+import pl.teksusik.kick4j.drops.DropsClient;
 import pl.teksusik.kick4j.events.EventsClient;
 import pl.teksusik.kick4j.events.handler.BuiltInKickWebhookHandler;
 import pl.teksusik.kick4j.events.handler.KickEventDispatcher;
@@ -44,6 +45,7 @@ public class KickClient {
     private final KicksClient kicksClient;
     private final PublicKeyClient publicKeyClient;
     private final EventsClient eventsClient;
+    private final DropsClient dropsClient;
     private final KickSignatureVerifier signatureVerifier;
     private final KickEventDispatcher eventDispatcher;
 
@@ -84,6 +86,7 @@ public class KickClient {
         this.kicksClient = new KicksClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.publicKeyClient = new PublicKeyClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.eventsClient = new EventsClient(httpClient, objectMapper, configuration, this.authorizationClient);
+        this.dropsClient = new DropsClient(httpClient, objectMapper, configuration, this.authorizationClient);
 
         this.signatureVerifier = new KickSignatureVerifier(this.publicKeyClient);
         this.eventDispatcher = new KickEventDispatcher(objectMapper);
@@ -150,6 +153,10 @@ public class KickClient {
 
     public EventsClient events() {
         return eventsClient;
+    }
+
+    public DropsClient drops() {
+        return dropsClient;
     }
 
     public KickSignatureVerifier signatureVerifier() {
