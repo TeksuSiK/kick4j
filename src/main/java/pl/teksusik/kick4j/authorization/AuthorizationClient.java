@@ -229,9 +229,14 @@ public class AuthorizationClient {
 
     /**
      * Introspects the current managed access token via the OAuth introspection endpoint.
+     * Uses the app access token when the client is configured with {@link AuthMode#APP},
+     * otherwise the user access token.
      */
     public TokenIntrospect introspectToken() {
-        return this.introspectToken(this.getAccessToken());
+        String token = this.configuration.getAuthMode() == AuthMode.APP
+                ? this.getAppAccessToken()
+                : this.getAccessToken();
+        return this.introspectToken(token);
     }
 
     /**
