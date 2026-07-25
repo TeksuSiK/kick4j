@@ -35,6 +35,7 @@ public final class KickConfiguration {
     private final String channelsRewardsRedemptionsAccept;
     private final String channelsRewardsRedemptionsReject;
     private final String kicksLeaderboard;
+    private final String dropsClaims;
 
     private KickConfiguration(Builder builder) {
         this.tokenStore = builder.tokenStore;
@@ -67,6 +68,7 @@ public final class KickConfiguration {
         this.channelsRewardsRedemptionsAccept = builder.channelsRewardsRedemptionsAccept;
         this.channelsRewardsRedemptionsReject = builder.channelsRewardsRedemptionsReject;
         this.kicksLeaderboard = builder.kicksLeaderboard;
+        this.dropsClaims = builder.dropsClaims;
     }
 
     public static Builder builder() {
@@ -193,6 +195,10 @@ public final class KickConfiguration {
         return kicksLeaderboard;
     }
 
+    public String getDropsClaims() {
+        return dropsClaims;
+    }
+
     public static final class Builder {
         private RefreshTokenStore tokenStore;
         private String clientId;
@@ -224,6 +230,7 @@ public final class KickConfiguration {
         private String channelsRewardsRedemptionsAccept = "/channels/rewards/redemptions/accept";
         private String channelsRewardsRedemptionsReject = "/channels/rewards/redemptions/reject";
         private String kicksLeaderboard = "/kicks/leaderboard";
+        private String dropsClaims = "/drops/claims";
 
         public Builder tokenStore(RefreshTokenStore tokenStore) {
             this.tokenStore = tokenStore;
@@ -372,6 +379,11 @@ public final class KickConfiguration {
 
         public Builder kicksLeaderboard(String kicksLeaderboard) {
             this.kicksLeaderboard = kicksLeaderboard;
+            return this;
+        }
+
+        public Builder dropsClaims(String dropsClaims) {
+            this.dropsClaims = dropsClaims;
             return this;
         }
 
