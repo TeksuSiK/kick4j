@@ -13,6 +13,7 @@ public final class KickConfiguration {
     private final String authorizationEndpoint;
     private final String tokenEndpoint;
     private final String baseUrl;
+    private final String baseUrlV2;
     private final String categories;
     private final String categoriesId;
     private final String tokenIntrospect;
@@ -41,6 +42,7 @@ public final class KickConfiguration {
         this.authorizationEndpoint = builder.authorizationEndpoint;
         this.tokenEndpoint = builder.tokenEndpoint;
         this.baseUrl = builder.baseUrl;
+        this.baseUrlV2 = builder.baseUrlV2;
         this.categories = builder.categories;
         this.categoriesId = builder.categoriesId;
         this.tokenIntrospect = builder.tokenIntrospect;
@@ -95,6 +97,10 @@ public final class KickConfiguration {
 
     public String getBaseUrl() {
         return baseUrl;
+    }
+
+    public String getBaseUrlV2() {
+        return baseUrlV2;
     }
 
     public String getCategories() {
@@ -178,6 +184,7 @@ public final class KickConfiguration {
         private String authorizationEndpoint = "/oauth/authorize";
         private String tokenEndpoint = "/oauth/token";
         private String baseUrl = "https://api.kick.com/public/v1";
+        private String baseUrlV2 = "https://api.kick.com/public/v2";
         private String categories = "/categories";
         private String categoriesId = "/categories/{id}";
         private String tokenIntrospect = "/token/introspect";
@@ -234,6 +241,11 @@ public final class KickConfiguration {
 
         public Builder baseUrl(String baseUrl) {
             this.baseUrl = baseUrl;
+            return this;
+        }
+
+        public Builder baseUrlV2(String baseUrlV2) {
+            this.baseUrlV2 = baseUrlV2;
             return this;
         }
 
