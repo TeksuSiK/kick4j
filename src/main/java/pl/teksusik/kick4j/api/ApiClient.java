@@ -50,6 +50,7 @@ public abstract class ApiClient {
         private final String method;
         private String path;
         private String baseUrl;
+        private boolean appAuth;
         private Map<String, Object> queryParams;
         private Object bodyObject;
         private Class<?> bodyClass;
@@ -65,6 +66,15 @@ public abstract class ApiClient {
          */
         public RequestBuilder baseUrl(String baseUrl) {
             this.baseUrl = baseUrl;
+            return this;
+        }
+
+        /**
+         * Authenticates this request with an app access token (Client Credentials flow)
+         * instead of the user access token. Use for endpoints that require an app token.
+         */
+        public RequestBuilder appAuth() {
+            this.appAuth = true;
             return this;
         }
 
@@ -106,9 +116,10 @@ public abstract class ApiClient {
 
         private HttpResponse<String> execute() throws IOException, InterruptedException {
             String url = buildUrl(this.baseUrl + this.path, this.queryParams);
+            String accessToken = this.appAuth ? authorization.getAppAccessToken() : authorization.getAccessToken();
             HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                     .uri(URI.create(url))
-                    .header("Authorization", "Bearer " + authorization.getAccessToken())
+                    .header("Authorization", "Bearer " + accessToken)
                     .header("Accept", "application/json");
 
             if ("GET".equalsIgnoreCase(method)) {

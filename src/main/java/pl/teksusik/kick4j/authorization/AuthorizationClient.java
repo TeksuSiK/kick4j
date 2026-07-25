@@ -38,6 +38,9 @@ public class AuthorizationClient {
     private String accessToken;
     private Instant expiresAt;
 
+    private String appAccessToken;
+    private Instant appExpiresAt;
+
     /**
      * Creates a new AuthorizationClient.
      *
@@ -144,6 +147,41 @@ public class AuthorizationClient {
         OAuthTokenResponse newToken = this.postOAuthTokenRequest(body);
         this.refreshToken.notifyRefreshTokenRoll(newToken.getRefreshToken());
         return newToken;
+    }
+
+    /**
+     * Requests a fresh app access token using the OAuth 2.1 Client Credentials flow
+     * ({@code grant_type=client_credentials}). App tokens are server-to-server tokens for
+     * accessing publicly available data and do not require a user login. They carry no
+     * refresh token; a new one is requested on demand once the current token expires.
+     *
+     * @return the new app access token response
+     */
+    public OAuthTokenResponse requestAppAccessToken() {
+        Map<String, String> body = Map.of(
+                "grant_type", "client_credentials",
+                "client_id", this.configuration.getClientId(),
+                "client_secret", this.configuration.getClientSecret()
+        );
+
+        OAuthTokenResponse response = this.postOAuthTokenRequest(body);
+        this.appAccessToken = response.getAccessToken();
+        this.appExpiresAt = Instant.now().plusSeconds(response.getExpiresIn());
+        return response;
+    }
+
+    /**
+     * Returns a valid app access token, requesting a new one via the Client Credentials
+     * flow if the current one is missing or about to expire.
+     *
+     * @return a valid app access token string
+     */
+    public String getAppAccessToken() {
+        if (this.appAccessToken == null || Instant.now().isAfter(this.appExpiresAt.minusSeconds(10))) {
+            this.requestAppAccessToken();
+        }
+
+        return this.appAccessToken;
     }
 
     /**

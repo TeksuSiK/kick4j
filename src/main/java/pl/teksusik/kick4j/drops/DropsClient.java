@@ -32,6 +32,7 @@ public class DropsClient extends ApiClient {
      */
     public DropClaimsResponse getClaims(GetDropClaimsRequest request) {
         return this.get(this.configuration.getDropsClaims())
+                .appAuth()
                 .queryParams(request)
                 .send(new TypeReference<>() {});
     }
@@ -42,6 +43,7 @@ public class DropsClient extends ApiClient {
      */
     public void updateClaims(List<DropClaimUpdate> claims) {
         this.patch(this.configuration.getDropsClaims())
+                .appAuth()
                 .body(Map.of("claims", claims))
                 .send(new TypeReference<>() {});
     }
