@@ -19,6 +19,7 @@ public final class KickConfiguration {
     private final String users;
     private final String channels;
     private final String chat;
+    private final String chatMessage;
     private final String moderation;
     private final String livestreams;
     private final String livestreamsStats;
@@ -46,6 +47,7 @@ public final class KickConfiguration {
         this.users = builder.users;
         this.channels = builder.channels;
         this.chat = builder.chat;
+        this.chatMessage = builder.chatMessage;
         this.moderation = builder.moderation;
         this.livestreams = builder.livestreams;
         this.livestreamsStats = builder.livestreamsStats;
@@ -119,6 +121,10 @@ public final class KickConfiguration {
         return chat;
     }
 
+    public String getChatMessage() {
+        return chatMessage;
+    }
+
     public String getModeration() {
         return moderation;
     }
@@ -178,6 +184,7 @@ public final class KickConfiguration {
         private String users = "/users";
         private String channels = "/channels";
         private String chat = "/chat";
+        private String chatMessage = "/chat/{message_id}";
         private String moderation = "/moderation/bans";
         private String livestreams = "/livestreams";
         private String livestreamsStats = "/livestreams/stats";
@@ -257,6 +264,11 @@ public final class KickConfiguration {
 
         public Builder chat(String chat) {
             this.chat = chat;
+            return this;
+        }
+
+        public Builder chatMessage(String chatMessage) {
+            this.chatMessage = chatMessage;
             return this;
         }
 
