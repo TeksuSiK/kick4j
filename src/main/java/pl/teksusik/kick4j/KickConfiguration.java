@@ -24,6 +24,7 @@ public final class KickConfiguration {
     private final String moderation;
     private final String livestreams;
     private final String livestreamsStats;
+    private final String usersLivestreams;
     private final String publicKey;
     private final String events;
     private final String channelsRewards;
@@ -53,6 +54,7 @@ public final class KickConfiguration {
         this.moderation = builder.moderation;
         this.livestreams = builder.livestreams;
         this.livestreamsStats = builder.livestreamsStats;
+        this.usersLivestreams = builder.usersLivestreams;
         this.publicKey = builder.publicKey;
         this.events = builder.events;
         this.channelsRewards = builder.channelsRewards;
@@ -143,6 +145,10 @@ public final class KickConfiguration {
         return livestreamsStats;
     }
 
+    public String getUsersLivestreams() {
+        return usersLivestreams;
+    }
+
     public String getPublicKey() {
         return publicKey;
     }
@@ -195,6 +201,7 @@ public final class KickConfiguration {
         private String moderation = "/moderation/bans";
         private String livestreams = "/livestreams";
         private String livestreamsStats = "/livestreams/stats";
+        private String usersLivestreams = "/users/livestreams";
         private String publicKey = "/public-key";
         private String events = "/events/subscriptions";
         private String channelsRewards = "/channels/rewards";
@@ -296,6 +303,11 @@ public final class KickConfiguration {
 
         public Builder livestreamsStats(String livestreamsStats) {
             this.livestreamsStats = livestreamsStats;
+            return this;
+        }
+
+        public Builder usersLivestreams(String usersLivestreams) {
+            this.usersLivestreams = usersLivestreams;
             return this;
         }
 
