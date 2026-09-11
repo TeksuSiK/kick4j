@@ -8,6 +8,7 @@ public class OAuthTokenResponse {
     private final String tokenType;
     private final String refreshToken;
     private final Integer expiresIn;
+    private final Integer refreshExpiresIn;
     private final String scope;
 
     @JsonCreator
@@ -15,11 +16,13 @@ public class OAuthTokenResponse {
                               @JsonProperty("token_type") String tokenType,
                               @JsonProperty("refresh_token") String refreshToken,
                               @JsonProperty("expires_in") Integer expiresIn,
+                              @JsonProperty("refresh_expires_in") Integer refreshExpiresIn,
                               @JsonProperty("scope") String scope) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
         this.refreshToken = refreshToken;
         this.expiresIn = expiresIn;
+        this.refreshExpiresIn = refreshExpiresIn;
         this.scope = scope;
     }
 
@@ -37,6 +40,10 @@ public class OAuthTokenResponse {
 
     public Integer getExpiresIn() {
         return expiresIn;
+    }
+
+    public Integer getRefreshExpiresIn() {
+        return refreshExpiresIn;
     }
 
     public String getScope() {
