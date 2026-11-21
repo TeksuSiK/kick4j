@@ -360,6 +360,10 @@ EventSubscriptionRequest subscription = EventSubscriptionRequest.builder()
     .method(EventSubscriptionRequest.Method.WEBHOOK)
     .build();
 client.events().postEventsSubscription(subscription);
+
+// List subscriptions (optionally filtered by broadcaster, e.g. with an app token)
+List<EventSubscription> all = client.events().getEventsSubscriptions();
+List<EventSubscription> forChannel = client.events().getEventsSubscriptions(currentUser.getUserId());
 ```
 
 ### Supported Events
