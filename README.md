@@ -170,7 +170,9 @@ System.out.println("Hello, " + currentUser.getName());
 // Get current channel
 Channel channel = client.channels().getCurrentChannel();
 System.out.println("Channel: " + channel.getSlug()
-    + " | subscribers: " + channel.getActiveSubscribersCount());
+    + " | subscribers: " + channel.getActiveSubscribersCount()
+    + " (gifted: " + channel.getActiveGiftedSubscribersCount() + ")");
+// getActiveSubscribersCount() includes gifted subs; subtract getActiveGiftedSubscribersCount() for paid-only
 
 // Send a chat message
 PostChatMessageRequest chatRequest = PostChatMessageRequest.builder()
