@@ -15,7 +15,7 @@ public class EventSubscriptionRequest {
     private final Method method;
 
     @JsonCreator
-    public EventSubscriptionRequest(@JsonProperty("broadcast_user_id") Integer broadcasterUserId,
+    public EventSubscriptionRequest(@JsonProperty("broadcaster_user_id") Integer broadcasterUserId,
                                     @JsonProperty("events") List<Event> events,
                                     @JsonProperty("method") Method method) {
         this.broadcasterUserId = broadcasterUserId;

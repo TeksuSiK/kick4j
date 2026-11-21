@@ -1,5 +1,11 @@
 package pl.teksusik.kick4j.events;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
 import pl.teksusik.kick4j.events.type.ChannelSubscriptionGiftsEvent;
 import pl.teksusik.kick4j.events.type.EventUser;
@@ -94,5 +100,21 @@ public class ChannelSubscriptionGiftsEventTest extends KickEventDispatcherTest {
 
         assertEquals(Instant.parse("2025-01-14T16:08:06Z"), event.getCreatedAt());
         assertEquals(Instant.parse("2025-02-14T16:08:06Z"), event.getExpiresAt());
+    }
+
+    @Test
+    public void should_bind_gifter_through_creator_parameter() throws JsonProcessingException {
+        // Without final fields as mutators, only the @JsonCreator parameter name can bind "gifter".
+        ObjectMapper objectMapper = JsonMapper.builder()
+                .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
+                .addModule(new JavaTimeModule())
+                .disable(MapperFeature.ALLOW_FINAL_FIELDS_AS_MUTATORS)
+                .build();
+
+        ChannelSubscriptionGiftsEvent event = objectMapper.readValue(PAYLOAD, ChannelSubscriptionGiftsEvent.class);
+
+        assertNotNull(event.getGifter());
+        assertEquals(987654321, event.getGifter().getUserId());
+        assertEquals("gifter_name", event.getGifter().getUsername());
     }
 }
