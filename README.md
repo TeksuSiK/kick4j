@@ -441,6 +441,8 @@ try {
 }
 ```
 
+Every 4xx/5xx response from the API raises an `ApiException`: `getErrorCode()` is the HTTP status, `getPayload()` the `message` from the response, and `getReason()` the machine-readable code Kick sends in `data` for some errors (e.g. `AD_BREAK_ACTIVE`, `CHANNEL_IS_LIVE`), or `null`.
+
 ## Requirements
 
 - Java 21 or higher

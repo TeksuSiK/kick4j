@@ -148,18 +148,17 @@ public abstract class ApiClient {
             try {
                 HttpResponse<String> response = execute();
                 String body = response.body();
+                throwIfError(response.statusCode(), body);
                 if (body == null || body.isEmpty()) {
                     return null;
                 }
 
                 ApiResponse<T> apiResponse = mapper.readValue(body, typeRef);
-                if (!apiResponse.isSuccess() && response.statusCode() >= 400) {
-                    throw new ApiException(response.statusCode(), apiResponse.getMessage());
-                }
-
                 return apiResponse.getData();
-            } catch (IOException | InterruptedException exception) {
+            } catch (InterruptedException exception) {
                 Thread.currentThread().interrupt();
+                throw new RuntimeException("API request interrupted", exception);
+            } catch (IOException exception) {
                 throw new RuntimeException("Failed to send API request", exception);
             }
         }
@@ -173,27 +172,47 @@ public abstract class ApiClient {
             try {
                 HttpResponse<String> response = execute();
                 String body = response.body();
+                throwIfError(response.statusCode(), body);
                 if (body == null || body.isEmpty()) {
                     return null;
                 }
 
-                if (response.statusCode() >= 400) {
-                    String message = null;
-                    try {
-                        JsonNode node = mapper.readTree(body);
-                        if (node.has("message")) {
-                            message = node.get("message").asText(null);
-                        }
-                    } catch (IOException ignored) {
-                    }
-                    throw new ApiException(response.statusCode(), message);
-                }
-
                 return mapper.readValue(body, typeRef);
-            } catch (IOException | InterruptedException exception) {
+            } catch (InterruptedException exception) {
                 Thread.currentThread().interrupt();
+                throw new RuntimeException("API request interrupted", exception);
+            } catch (IOException exception) {
                 throw new RuntimeException("Failed to send API request", exception);
             }
+        }
+
+        /**
+         * Throws an {@link ApiException} for any 4xx/5xx response before the body is mapped to the
+         * success model, so error envelopes such as {@code {"data": "AD_BREAK_ACTIVE", "message": "..."}}
+         * keep their message and reason.
+         */
+        private void throwIfError(int statusCode, String body) {
+            if (statusCode < 400) {
+                return;
+            }
+
+            String message = body;
+            String reason = null;
+            if (body != null && !body.isEmpty()) {
+                try {
+                    JsonNode node = mapper.readTree(body);
+                    if (node.isObject()) {
+                        message = node.hasNonNull("message") ? node.get("message").asText() : null;
+                        JsonNode data = node.get("data");
+                        if (data != null && data.isTextual()) {
+                            reason = data.asText();
+                        }
+                    }
+                } catch (IOException ignored) {
+                }
+            }
+
+            throw new ApiException(statusCode, message, reason);
         }
     }
 
