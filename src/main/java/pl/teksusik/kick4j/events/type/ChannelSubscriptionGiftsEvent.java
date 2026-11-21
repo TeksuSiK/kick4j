@@ -15,7 +15,7 @@ public class ChannelSubscriptionGiftsEvent extends KickEvent {
 
     @JsonCreator
     public ChannelSubscriptionGiftsEvent(@JsonProperty("broadcaster") EventUser broadcaster,
-                                         @JsonProperty("subscriber") EventUser gifter,
+                                         @JsonProperty("gifter") EventUser gifter,
                                          @JsonProperty("giftees") List<EventUser> giftees,
                                          @JsonProperty("created_at") Instant createdAt,
                                          @JsonProperty("expires_at") Instant expiresAt) {
