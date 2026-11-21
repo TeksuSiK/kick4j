@@ -11,7 +11,9 @@ public enum Scope {
     EVENTS_SUBSCRIBE("events:subscribe"),
     MODERATION_BAN("moderation:ban"),
     MODERATION_CHAT_MESSAGE_MANAGE("moderation:chat_message:manage"),
-    KICKS_READ("kicks:read");
+    KICKS_READ("kicks:read"),
+    ADS_READ("ads:read"),
+    ADS_WRITE("ads:write");
 
     private final String scope;
 

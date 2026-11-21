@@ -14,6 +14,7 @@ A comprehensive Java library for interacting with the Kick.com streaming platfor
     - Channel Rewards (channel points) and redemptions
     - KICKs gifting leaderboard
     - Drops reward claims (Public API)
+    - Ads (ad breaks, ad break status, ads enrollment)
     - Event subscriptions
 - **OAuth 2.1**: Both authentication flows
     - **User Access Token** — Authorization Code + PKCE (act on behalf of a user)
@@ -158,7 +159,7 @@ client.authorization().revokeToken(someToken, TokenTypeHint.REFRESH_TOKEN);
 
 ### Scopes
 
-`user:read`, `channel:read`, `channel:write`, `channel:rewards:read`, `channel:rewards:write`, `chat:write`, `streamkey:read`, `events:subscribe`, `moderation:ban`, `moderation:chat_message:manage`, `kicks:read` — available via the `Scope` enum.
+`user:read`, `channel:read`, `channel:write`, `channel:rewards:read`, `channel:rewards:write`, `chat:write`, `streamkey:read`, `events:subscribe`, `moderation:ban`, `moderation:chat_message:manage`, `kicks:read`, `ads:read`, `ads:write` — available via the `Scope` enum.
 
 ## Basic API Usage
 
@@ -339,6 +340,32 @@ String next = claims.getCursor();
 // Update the external_status of up to 100 claims
 client.drops().updateClaims(List.of(
     new DropClaimUpdate("01KAAFHJ2PNXS48NG8XXPGWKCZ", "processed")));
+```
+
+## Ads
+
+All Ads endpoints act on the authenticated broadcaster's channel and require a **user** access token. Creating an ad break and enrolling need `ads:write`; reading the status accepts `ads:read` or `ads:write`.
+
+```java
+import pl.teksusik.kick4j.ads.AdBreak;
+import pl.teksusik.kick4j.ads.AdBreakStatus;
+import pl.teksusik.kick4j.ads.CreateAdBreakRequest;
+import java.util.UUID;
+
+// Enroll the channel in ads (only while offline, after it has streamed at least once)
+client.ads().enroll();
+
+// Start a 30-second ad break (7-90 s); the id is a client-generated UUID
+AdBreak adBreak = client.ads().createAdBreak(
+    new CreateAdBreakRequest(30, UUID.randomUUID().toString()));
+// or let kick4j generate the id
+client.ads().createAdBreak(30);
+
+AdBreakStatus status = client.ads().getAdBreakStatus();
+System.out.println(status.getRemainingAdBreaks() + " of " + status.getLimits().getMax()
+    + " ad breaks left per " + status.getLimits().getPeriodSeconds() + " s");
+status.getAdBreaks().forEach(ad ->
+    System.out.println(ad.getId() + " " + ad.getStatus() + " (" + ad.getSource() + ")"));
 ```
 
 ## Events & Webhooks
