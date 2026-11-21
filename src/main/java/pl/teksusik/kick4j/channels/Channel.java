@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import pl.teksusik.kick4j.categories.Category;
 
 public class Channel {
+    private final Integer activeGiftedSubscribersCount;
     private final Integer activeSubscribersCount;
     private final String bannerPicture;
     private final Integer broadcasterUserId;
@@ -16,7 +17,8 @@ public class Channel {
     private final String streamTitle;
 
     @JsonCreator
-    public Channel(@JsonProperty("active_subscribers_count") Integer activeSubscribersCount,
+    public Channel(@JsonProperty("active_gifted_subscribers_count") Integer activeGiftedSubscribersCount,
+                   @JsonProperty("active_subscribers_count") Integer activeSubscribersCount,
                    @JsonProperty("banner_picture") String bannerPicture,
                    @JsonProperty("broadcaster_user_id") Integer broadcasterUserId,
                    @JsonProperty("canceled_subscribers_count") Integer canceledSubscribersCount,
@@ -25,6 +27,7 @@ public class Channel {
                    @JsonProperty("slug") String slug,
                    @JsonProperty("stream") StreamInformation stream,
                    @JsonProperty("stream_title") String streamTitle) {
+        this.activeGiftedSubscribersCount = activeGiftedSubscribersCount;
         this.activeSubscribersCount = activeSubscribersCount;
         this.bannerPicture = bannerPicture;
         this.broadcasterUserId = broadcasterUserId;
@@ -36,6 +39,17 @@ public class Channel {
         this.streamTitle = streamTitle;
     }
 
+    /**
+     * Number of active gifted subscriptions. Already included in {@link #getActiveSubscribersCount()}.
+     */
+    public Integer getActiveGiftedSubscribersCount() {
+        return activeGiftedSubscribersCount;
+    }
+
+    /**
+     * Number of all active subscriptions, paid and gifted. Subtract
+     * {@link #getActiveGiftedSubscribersCount()} to get paid-only subscribers.
+     */
     public Integer getActiveSubscribersCount() {
         return activeSubscribersCount;
     }
