@@ -38,6 +38,9 @@ public final class KickConfiguration {
     private final String channelsRewardsRedemptionsReject;
     private final String kicksLeaderboard;
     private final String dropsClaims;
+    private final String adsAdBreak;
+    private final String adsAdBreakStatus;
+    private final String adsEnroll;
 
     private KickConfiguration(Builder builder) {
         this.tokenStore = builder.tokenStore;
@@ -72,6 +75,9 @@ public final class KickConfiguration {
         this.channelsRewardsRedemptionsReject = builder.channelsRewardsRedemptionsReject;
         this.kicksLeaderboard = builder.kicksLeaderboard;
         this.dropsClaims = builder.dropsClaims;
+        this.adsAdBreak = builder.adsAdBreak;
+        this.adsAdBreakStatus = builder.adsAdBreakStatus;
+        this.adsEnroll = builder.adsEnroll;
     }
 
     public static Builder builder() {
@@ -210,6 +216,18 @@ public final class KickConfiguration {
         return dropsClaims;
     }
 
+    public String getAdsAdBreak() {
+        return adsAdBreak;
+    }
+
+    public String getAdsAdBreakStatus() {
+        return adsAdBreakStatus;
+    }
+
+    public String getAdsEnroll() {
+        return adsEnroll;
+    }
+
     public static final class Builder {
         private RefreshTokenStore tokenStore;
         private String clientId;
@@ -243,6 +261,9 @@ public final class KickConfiguration {
         private String channelsRewardsRedemptionsReject = "/channels/rewards/redemptions/reject";
         private String kicksLeaderboard = "/kicks/leaderboard";
         private String dropsClaims = "/drops/claims";
+        private String adsAdBreak = "/ads/ad-break";
+        private String adsAdBreakStatus = "/ads/ad-break-status";
+        private String adsEnroll = "/ads/enroll";
 
         public Builder tokenStore(RefreshTokenStore tokenStore) {
             this.tokenStore = tokenStore;
@@ -407,6 +428,21 @@ public final class KickConfiguration {
 
         public Builder dropsClaims(String dropsClaims) {
             this.dropsClaims = dropsClaims;
+            return this;
+        }
+
+        public Builder adsAdBreak(String adsAdBreak) {
+            this.adsAdBreak = adsAdBreak;
+            return this;
+        }
+
+        public Builder adsAdBreakStatus(String adsAdBreakStatus) {
+            this.adsAdBreakStatus = adsAdBreakStatus;
+            return this;
+        }
+
+        public Builder adsEnroll(String adsEnroll) {
+            this.adsEnroll = adsEnroll;
             return this;
         }
 

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.sun.net.httpserver.HttpServer;
+import pl.teksusik.kick4j.ads.AdsClient;
 import pl.teksusik.kick4j.api.ApiResponse;
 import pl.teksusik.kick4j.api.ApiResponseDeserializer;
 import pl.teksusik.kick4j.authorization.AuthorizationClient;
@@ -46,6 +47,7 @@ public class KickClient {
     private final PublicKeyClient publicKeyClient;
     private final EventsClient eventsClient;
     private final DropsClient dropsClient;
+    private final AdsClient adsClient;
     private final KickSignatureVerifier signatureVerifier;
     private final KickEventDispatcher eventDispatcher;
 
@@ -87,6 +89,7 @@ public class KickClient {
         this.publicKeyClient = new PublicKeyClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.eventsClient = new EventsClient(httpClient, objectMapper, configuration, this.authorizationClient);
         this.dropsClient = new DropsClient(httpClient, objectMapper, configuration, this.authorizationClient);
+        this.adsClient = new AdsClient(httpClient, objectMapper, configuration, this.authorizationClient);
 
         this.signatureVerifier = new KickSignatureVerifier(this.publicKeyClient);
         this.eventDispatcher = new KickEventDispatcher(objectMapper);
@@ -157,6 +160,10 @@ public class KickClient {
 
     public DropsClient drops() {
         return dropsClient;
+    }
+
+    public AdsClient ads() {
+        return adsClient;
     }
 
     public KickSignatureVerifier signatureVerifier() {
