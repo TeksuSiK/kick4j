@@ -22,7 +22,7 @@ A comprehensive Java library for interacting with the Kick.com streaming platfor
 - **Explicit auth mode**: Choose `AuthMode.USER` or `AuthMode.APP` per client, override per request
 - **Webhook Support**: Built-in webhook receiver with signature verification, for demonstration purposes
 - **Event System**: Type-safe event handling for real-time notifications
-- **Cursor Pagination**: First-class `PaginatedResponse<T>` for V2 endpoints
+- **Cursor Pagination**: First-class `PaginatedResponse<T>` for V2 endpoints and channel reward redemptions
 - **Flexible Configuration**: Customizable endpoints, base URLs and settings
 - **Token Management**: Automatic user-token refresh and app-token renewal
 
@@ -269,6 +269,7 @@ client.moderation().deleteModerationBans(channel.getBroadcasterUserId(), 123456)
 Requires the `channel:rewards:read` / `channel:rewards:write` scopes.
 
 ```java
+import pl.teksusik.kick4j.api.PaginatedResponse;
 import pl.teksusik.kick4j.rewards.ChannelReward;
 import pl.teksusik.kick4j.rewards.CreateChannelRewardRequest;
 import pl.teksusik.kick4j.rewards.GetRedemptionsRequest;
@@ -287,9 +288,16 @@ ChannelReward reward = client.channelRewards().createReward(
         .isUserInputRequired(true)
         .build());
 
-// List pending redemptions (grouped by reward), then accept/reject them
-List<RedemptionsByReward> pending = client.channelRewards().getRedemptions(
+// List pending redemptions (grouped by reward, cursor-paginated), then accept/reject them
+PaginatedResponse<RedemptionsByReward> pending = client.channelRewards().getRedemptionsPage(
     GetRedemptionsRequest.builder().status(RedemptionStatus.PENDING).build());
+
+// Fetch the next page with the returned cursor (null on the last page)
+String nextCursor = pending.getPagination().getNextCursor();
+if (nextCursor != null) {
+    PaginatedResponse<RedemptionsByReward> nextPage = client.channelRewards().getRedemptionsPage(
+        GetRedemptionsRequest.builder().status(RedemptionStatus.PENDING).cursor(nextCursor).build());
+}
 
 client.channelRewards().acceptRedemptions("redemption-id-1", "redemption-id-2");
 client.channelRewards().rejectRedemptions("redemption-id-3");

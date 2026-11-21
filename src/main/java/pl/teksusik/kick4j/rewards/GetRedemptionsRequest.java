@@ -9,8 +9,8 @@ import java.util.List;
  * Filters for listing channel reward redemptions.
  * <p>
  * Note: when filtering by redemption {@code ids}, no other filter may be provided.
- * The {@code cursor} lets callers page manually; the API's {@code next_cursor} is not
- * surfaced by the response models yet (pending generic pagination support).
+ * Set {@code cursor} to the {@code next_cursor} returned by
+ * {@link ChannelRewardsClient#getRedemptionsPage(GetRedemptionsRequest)} to fetch the next page.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GetRedemptionsRequest {

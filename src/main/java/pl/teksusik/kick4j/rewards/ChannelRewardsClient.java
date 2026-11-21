@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.teksusik.kick4j.KickConfiguration;
 import pl.teksusik.kick4j.api.ApiClient;
+import pl.teksusik.kick4j.api.PaginatedResponse;
 import pl.teksusik.kick4j.authorization.AuthorizationClient;
 
 import java.net.http.HttpClient;
@@ -52,19 +53,45 @@ public class ChannelRewardsClient extends ApiClient {
     }
 
     /**
-     * Lists reward redemptions, grouped by reward. Defaults to pending redemptions.
+     * @deprecated Drops the pagination cursor, so only the first page is reachable.
+     * Use {@link #getRedemptionsPage()} instead.
      */
+    @Deprecated
+    @SuppressWarnings("deprecation")
     public List<RedemptionsByReward> getRedemptions() {
         return this.getRedemptions(GetRedemptionsRequest.builder().build());
     }
 
     /**
-     * Lists reward redemptions, grouped by reward, using the provided filters.
+     * @deprecated Drops the pagination cursor, so only the first page is reachable.
+     * Use {@link #getRedemptionsPage(GetRedemptionsRequest)} instead.
      */
+    @Deprecated
     public List<RedemptionsByReward> getRedemptions(GetRedemptionsRequest request) {
+        PaginatedResponse<RedemptionsByReward> page = this.getRedemptionsPage(request);
+        return page == null ? null : page.getData();
+    }
+
+    /**
+     * {@code GET /public/v1/channels/rewards/redemptions} — lists reward redemptions, grouped by reward,
+     * with default filters (pending redemptions, first page).
+     * Requires a user access token with {@code channel:rewards:read} or {@code channel:rewards:write}.
+     */
+    public PaginatedResponse<RedemptionsByReward> getRedemptionsPage() {
+        return this.getRedemptionsPage(GetRedemptionsRequest.builder().build());
+    }
+
+    /**
+     * {@code GET /public/v1/channels/rewards/redemptions} — lists reward redemptions, grouped by reward,
+     * using the provided filters.
+     * Requires a user access token with {@code channel:rewards:read} or {@code channel:rewards:write}.
+     * Cursor-paginated: pass {@link PaginatedResponse#getPagination()}'s next cursor back via
+     * {@link GetRedemptionsRequest.Builder#cursor(String)} to fetch the next page.
+     */
+    public PaginatedResponse<RedemptionsByReward> getRedemptionsPage(GetRedemptionsRequest request) {
         return this.get(this.configuration.getChannelsRewardsRedemptions())
                 .queryParams(request)
-                .send(new TypeReference<>() {});
+                .sendRaw(new TypeReference<>() {});
     }
 
     /**
